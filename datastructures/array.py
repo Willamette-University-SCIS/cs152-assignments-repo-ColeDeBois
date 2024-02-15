@@ -129,7 +129,6 @@ class Array:
                 None
         """
         # raise NotImplementedError('Array.append')
-        
         narray=Array(size=self.size+1)
         for i, item in enumerate(self.array):
             narray[i]=item
