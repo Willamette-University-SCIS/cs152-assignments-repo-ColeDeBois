@@ -1,6 +1,6 @@
 from datastructures.array import Array
 
-class TestClassTemplate:
+class test_Array_Methods:
     def test_method_template(self):
         # Arrange (set up your test data)
 
@@ -25,16 +25,36 @@ class TestClassTemplate:
         assert Array.from_list(lst) == [1,2,3,4]
 
     def test__getitem_01():
-        pass
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+        assert array[0] == lst[0]
 
     def test__setitem_01():
-        pass
-
-    def test_append_01():
-        pass
+        array=Array(size=5)
+        array[0]='good'
+        assert array[0] == 'good'
 
     def test___len__01():
-        pass
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+        assert len(array) == len(lst)
+
+    def test_append_01():
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+
+        array.append(5)
+        assert array[4] == 5
+
+    def test_len_append():
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+
+        array.append(5)
+        assert len(array) == 5
+        
+
+    
     
 
     

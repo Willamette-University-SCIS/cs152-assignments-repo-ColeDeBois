@@ -49,6 +49,7 @@ class Array:
 
 
 
+
     
     @staticmethod
     def from_list(list_items: list) -> 'Array':
@@ -113,7 +114,7 @@ class Array:
         """
         # raise NotImplementedError('Array.__setitem__')
         if index >= self.size:
-            raise IndexError 
+            raise IndexError
         self.array[index]=data
     
     def append(self, data: Any) -> None:
@@ -129,7 +130,7 @@ class Array:
                 None
         """
         # raise NotImplementedError('Array.append')
-        narray=Array(size=self.size+1)
+        narray=np.array([self.default for i in range(self.size+1)])
         for i, item in enumerate(self.array):
             narray[i]=item
         narray[-1]=data
@@ -176,7 +177,7 @@ class Array:
             ValueError: if the new size is less than 0.
         """
         # raise NotImplementedError('Array.resize')
-        narray=Array(size=new_size, default_item_value=default_value)
+        narray=np.array([default_value for i in range(new_size)])
         if self.size < new_size:
             for i in range(self.size):
                 narray[i]=self.array[i]
@@ -238,8 +239,10 @@ class Array:
         Yields:
                 item (Any): yields the item at index starting at the end
         """
-        raise NotImplementedError('Array.__reversed__')
-    
+        # raise NotImplementedError('Array.__reversed__')
+        for i in range(self.size-1,-1,-1):
+            yield self.array[i]
+
     def __delitem__(self, index: int) -> None:
         """ Delete an item in the array. Copies the array contents from index + 1
             down to fill the gap caused by deleting the item and shrinks the array size
@@ -303,7 +306,7 @@ class Array:
             None
         """
         # raise NotImplementedError('Array.clear')
-        self.array=Array()
+        self.array=Array(default_item_value=self.default)
     
     def __str__(self) -> str:
         """ Return a string representation of the data and structure.
