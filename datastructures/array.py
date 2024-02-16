@@ -68,7 +68,7 @@ class Array:
             TypeError: if list_items is not a list.
         """
         # raise NotImplementedError('Array.from_list')
-        if type(list_items) != list:
+        if not isinstance(list_items, list):
             raise TypeError
         array=Array(size=len(list_items))
         for i, item in enumerate(list_items):
@@ -135,6 +135,7 @@ class Array:
             narray[i]=item
         narray[-1]=data
         self.array=narray
+        self.size+=1
     
     def __len__(self) -> int:
         """ Length operator for getting the logical length of the Array (number of items in the Array).
@@ -177,6 +178,8 @@ class Array:
             ValueError: if the new size is less than 0.
         """
         # raise NotImplementedError('Array.resize')
+        if new_size < 0:
+            raise ValueError
         narray=np.array([default_value for i in range(new_size)])
         if self.size < new_size:
             for i in range(self.size):
@@ -185,6 +188,8 @@ class Array:
             for i in range(new_size):
                 narray[i]=self.array[i]
         self.array=narray
+        self.size=new_size
+        self.default=default_value
 
     
     def __eq__(self, other: object) -> bool:
@@ -199,7 +204,18 @@ class Array:
         Returns:
                 is_equal (bool): true if the arrays are equal (deep check).
         """
-        raise NotImplementedError('Array.__eq__')
+        # raise NotImplementedError('Array.__eq__')
+        if type(other) == type(Array):
+            if self.size == len(other):
+                for i, item in enumerate(self.size):
+                    if item != other[i]:
+                        return False
+                return True
+        else: return TypeError(f'{type(other)} cannot be compared to an Array')
+
+
+
+
     
     def __ne__(self, other: object) -> bool:
         """ Non-Equality operator !=.
@@ -213,7 +229,8 @@ class Array:
         Returns:
                 is_not_equal (bool): true if the arrays are NOT equal (deep check).
         """
-        raise NotImplementedError('Array.__ne__')
+        # raise NotImplementedError('Array.__ne__')
+        return not self==other
     
     def __iter__(self) -> Any:
         """ Iterator operator. Allows for iteration over the Array.
@@ -261,7 +278,14 @@ class Array:
         Returns:
             None
         """
-        raise NotImplementedError('Array.__delitem__')
+        # raise NotImplementedError('Array.__delitem__')
+        narray=np.array([self.default for i in range(self.size-1)])
+        for i, item in enumerate:
+            if i != index:
+                narray[i]=item
+        self.array=narray
+        self.size-=1
+        
     
     def __contains__(self, item: Any) -> bool:
         """ Contains operator (in). Checks if the array contains the item.
@@ -307,6 +331,7 @@ class Array:
         """
         # raise NotImplementedError('Array.clear')
         self.array=Array(default_item_value=self.default)
+        self.size=0
     
     def __str__(self) -> str:
         """ Return a string representation of the data and structure.
