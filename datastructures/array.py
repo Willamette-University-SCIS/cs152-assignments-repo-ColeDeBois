@@ -175,7 +175,16 @@ class Array:
         Raises:
             ValueError: if the new size is less than 0.
         """
-        raise NotImplementedError('Array.resize')
+        # raise NotImplementedError('Array.resize')
+        narray=Array(size=new_size, default_item_value=default_value)
+        if self.size < new_size:
+            for i in range(self.size):
+                narray[i]=self.array[i]
+        elif new_size <= self.size:
+            for i in range(new_size):
+                narray[i]=self.array[i]
+        self.array=narray
+
     
     def __eq__(self, other: object) -> bool:
         """ Equality operator == to check if two Arrays are equal (deep check).
@@ -214,7 +223,10 @@ class Array:
         Yields:
             item (Any): yields the item at index
         """
-        raise NotImplementedError('Array.__iter__')
+        # raise NotImplementedError('Array.__iter__')
+        for i in range(self.size):
+            yield self.array[i]
+        
     
     def __reversed__(self) -> Any:
         """ Reversed iterator operator. Allows for iteration over the Array in

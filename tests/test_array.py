@@ -13,8 +13,6 @@ class TestClassTemplate:
 
     def test_from_list_type_error():
         lst='lll'
-
-        
         try:
             array=Array.from_list(lst)
             print(array)
