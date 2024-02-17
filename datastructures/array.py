@@ -205,18 +205,15 @@ class Array:
                 is_equal (bool): true if the arrays are equal (deep check).
         """
         # raise NotImplementedError('Array.__eq__')
-        if type(other) == type(Array):
+        if type(other) == type(self):
             if self.size == len(other):
-                for i, item in enumerate(self.size):
+                for i, item in enumerate(self.array):
                     if item != other[i]:
                         return False
                 return True
-        else: return TypeError(f'{type(other)} cannot be compared to an Array')
+        return False
 
 
-
-
-    
     def __ne__(self, other: object) -> bool:
         """ Non-Equality operator !=.
         Examples:
@@ -280,9 +277,11 @@ class Array:
         """
         # raise NotImplementedError('Array.__delitem__')
         narray=np.array([self.default for i in range(self.size-1)])
-        for i, item in enumerate:
-            if i != index:
+        for i, item in enumerate(self.array):
+            if i < index:
                 narray[i]=item
+            elif i > index:
+                narray[i-1]=item
         self.array=narray
         self.size-=1
         
@@ -299,8 +298,13 @@ class Array:
         Returns:
             contains_item (bool): true if the array contains the item.
         """
-        raise NotImplementedError('Array.__contains__')
-    
+        # raise NotImplementedError('Array.__contains__')
+        for thing in self.array:
+            if thing==item:
+                return True
+        return False
+
+
     def __does_not_contain__(self, item: Any) -> bool:
         """ Does not contain operator (not in)
         Examples:
@@ -314,7 +318,10 @@ class Array:
             does_not_contains_item (bool): true if the array does not contain the
         item.
         """
-        raise NotImplementedError('Array.__does_not_contain__')
+        if item in self.array:
+            return False
+        else:
+            return True
     
     def clear(self) -> None:
         """ Clear the Array

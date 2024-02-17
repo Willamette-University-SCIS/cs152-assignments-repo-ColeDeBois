@@ -29,6 +29,14 @@ class TestArray:
         array=Array.from_list(lst)
         assert array[0] == lst[0]
 
+    def test__getitem_02(self):
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+        try:
+            array[4]
+        except:
+            IndexError
+
     def test__setitem_01(self):
         array=Array(size=5)
         array[0]='good'
@@ -52,7 +60,44 @@ class TestArray:
 
         array.append(5)
         assert len(array) == 5
-        
+
+    def test_ne_equal_sized(self):
+        lst1=[2,3,2]
+        lst2=[1,2,3]
+        array1=Array.from_list(lst1)
+        array2=Array.from_list(lst2)
+
+        assert array2 != array1
+    
+    def test_ne_type(self):
+        lst1=[2,3,2]
+        array1=Array.from_list(lst1)
+        assert array1 != lst1
+
+    def test_eq_different_sizes(self):
+        lst1=[1,2,3,4]
+        lst2=[1,2,3]
+        array1=Array.from_list(lst1)
+        array2=Array.from_list(lst2)
+
+        assert not array2 == array1
+
+    def test_eq_different_entries(self):
+        lst1=[1,4,3]
+        lst2=[1,2,3]
+        array1=Array.from_list(lst1)
+        array2=Array.from_list(lst2)
+
+        assert not array2 == array1
+
+    def test_del_01(self):
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+
+        del array[1]
+
+        assert array == Array.from_list([1,3,4])
+
 
     
     
