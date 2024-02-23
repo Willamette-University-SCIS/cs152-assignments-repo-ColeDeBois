@@ -209,7 +209,7 @@ class Array2D:
 
         """
         # raise NotImplementedError("Array2D.resize_columns")
-        if new_columns <0:
+        if new_columns <= 0:
             raise ValueError
 
         data_copy = self.data
@@ -253,7 +253,7 @@ class Array2D:
             ValueError: if the new_rows is less than 0.
         """
         # raise NotImplementedError("Array2D.resize_rows")
-        if new_rows < 0:
+        if new_rows <= 0:
             raise ValueError
         new_data=Array(new_rows*self.ncols, default_item_value)
         if new_rows != self.nrows:
