@@ -68,6 +68,7 @@ class TestArray2d:
             pass
 
     def test_getitem_error_04(self):
+
         array=Array2D.from_list([[1,2,3],
                                  [4,5,6],
                                  [7,8,9]])
@@ -76,3 +77,64 @@ class TestArray2d:
             array[0][3]
         except IndexError:
             pass
+
+    def test_str_01(self):
+        lst=[[1,2],[3,4]]
+        array=Array2D.from_list(lst)
+
+        assert str(array) == str(lst)
+    
+    def test_repr_01(self):
+        lst=[[1,2],[3,4]]
+        array=Array2D.from_list(lst)
+
+        assert repr(lst) == repr(array)
+
+    def test_clear_01(self):
+        array=Array2D.from_list([[1,2,3],
+                                 [4,5,6],
+                                 [7,8,9]])
+        array.clear()
+        assert array.dimensions==(3,3)
+
+    def test_resize_columns_bigger_01(self):
+        tarray=Array2D.from_list([[1,2,3],
+                                  [4,5,6],
+                                  [7,8,9]])
+        tarray.resize_columns(5)
+
+        garray=Array2D.from_list([[1,2,3,None,None],
+                                  [4,5,6,None,None],
+                                  [7,8,9,None,None]])
+        assert tarray.dimensions == garray.dimensions
+        assert tarray == garray   
+
+    def test_resize_columns_smaller(self):
+        tarray=Array2D.from_list([[1,2,3],
+                                  [4,5,6],
+                                  [7,8,9]])
+        tarray.resize_columns(1)
+        garray=Array2D.from_list([[1],
+                                 [4],
+                                 [7]])
+        assert tarray==garray
+    
+    def test_resize_rows_bigger(self):
+        tarray=Array2D.from_list([[1,2,3],
+                                  [4,5,6],
+                                  [7,8,9]])
+        tarray.resize_rows(4)
+        garray=Array2D.from_list([[1,2,3],
+                                  [4,5,6],
+                                  [7,8,9],
+                                  [None,None,None]])
+        assert tarray==garray
+    
+    def test_resize_rows_smaller(self):
+        tarray=Array2D.from_list([[1,2,3],
+                                  [4,5,6],
+                                  [7,8,9]])
+        tarray.resize_rows(2)
+        garray=Array2D.from_list([[1,2,3],
+                                  [4,5,6]])
+        assert tarray==garray

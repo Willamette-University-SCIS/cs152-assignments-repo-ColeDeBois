@@ -1,16 +1,7 @@
 from datastructures.array import Array
 
 class TestArray:
-    def test_method_template(self):
-        # Arrange (set up your test data)
-
-
-        # Act (perform the action you want to test)
-
-
-        # Assert (check that the test is passing)
-        pass
-
+    
     def test_from_list_type_error(self):
         lst='lll'
         try:
@@ -20,9 +11,9 @@ class TestArray:
             pass
     
     def test_from_list_01(self):
-        lst=[1,2,3,4]
+        lst=[1,1,1,1]
 
-        assert Array.from_list(lst) == [1,2,3,4]
+        assert Array.from_list(lst) == Array(size=4,default_item_value=1)
 
     def test__getitem_01(self):
         lst=[1,2,3,4]

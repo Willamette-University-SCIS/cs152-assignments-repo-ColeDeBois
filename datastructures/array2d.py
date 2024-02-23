@@ -69,12 +69,16 @@ class Array2D:
                 self.data[idx]=data
 
             def __str__(self):
-                lst=[]
+                string='['
                 for i in range(self.len):
                     idx=self._proj_1d(i)
                     item=self.data[idx]
-                    lst.append[item]
-                return str(lst) 
+                    if i != self.len-1:
+                        string+=str(item)+', '
+                    else:
+                        string+=str(item)+']'
+                return string
+
 
             def __repr__(self) -> str:
                 return self.__str__()
@@ -88,7 +92,7 @@ class Array2D:
             def __ne__(self, __o: object) -> bool:
                 return not self == __o
         
-        list_of_rows=[_row(columns,i,self.data) for i in range(rows)]
+        list_of_rows=[_row(self.ncols,i,self.data) for i in range(rows)]
         self.rows=list_of_rows
 
     @staticmethod   
@@ -155,7 +159,6 @@ class Array2D:
         # raise NotImplementedError("Array2D.__getitem__")
         if row_index < 0 or row_index >= self.nrows:
             raise IndexError
-        
         return self.rows[row_index]
         
 
@@ -180,7 +183,7 @@ class Array2D:
         # raise NotImplementedError("Array2D.dimensions")
         return (self.nrows, self.ncols)
 
-    def resize_columns(self, new_columns_len: int, default_item_value: Any = None) -> None:
+    def resize_columns(self, new_columns: int, default_item_value: Any = None) -> None:
         """ Resize the length of the columns. Must be able to handle both increasing and 
             decreasing the size of the columns. Must not lose any data when resizing
             the columns. If the new length is smaller, then the data will be truncated.
@@ -205,9 +208,27 @@ class Array2D:
             ValueError: if the new_columns_len is less than 0.
 
         """
-        raise NotImplementedError("Array2D.resize_columns")
+        # raise NotImplementedError("Array2D.resize_columns")
+        if new_columns <0:
+            raise ValueError
 
-    def resize_rows(self, new_rows_len: int, default_item_value: Any = None) -> None:
+        data_copy = self.data
+        new_data = Array(new_columns*self.nrows, default_item_value)
+        if new_columns != self.ncols:
+            row_idx=-1
+            for i in range(len(new_data)):
+                i = i % new_columns
+                if i == 0:
+                    row_idx += 1
+                if i < self.ncols:
+                    new_data[i+row_idx*new_columns] = data_copy[i+row_idx*self.ncols]
+
+            self.data=new_data
+            self.ncols=new_columns
+            self.zero=default_item_value
+            
+
+    def resize_rows(self, new_rows: int, default_item_value: Any = None) -> None:
         """ Resize the length of the rows. Must be able to handle both increasing and
             decreasing the size of the rows. Must not lose any data when resizing the rows.
             If the new length is smaller, then the data will be truncated.
@@ -222,16 +243,78 @@ class Array2D:
             (2, 3)
         
         Args:
-            new_rows_len (int): the new length of the rows.
+            new_rows (int): the new length of the rows.
             default_item_value (Any): the default value to initialize the new items with.
 
         Returns:
             None
         
         Raises:
-            ValueError: if the new_rows_len is less than 0.
+            ValueError: if the new_rows is less than 0.
         """
-        raise NotImplementedError("Array2D.resize_rows")
+        # raise NotImplementedError("Array2D.resize_rows")
+        if new_rows < 0:
+            raise ValueError
+        new_data=Array(new_rows*self.ncols, default_item_value)
+        if new_rows != self.nrows:
+            for i in range(len(new_data)):
+                if i < len(self.data):
+                    new_data[i]=self.data[i]
+                else:
+                    new_data[i]=default_item_value
+            self.data=new_data
+            self.zero=default_item_value
+            self.nrows=new_rows
+
+            class _row:
+                def __init__(self, ncols:int, row_idx:int, data:Array):
+                    self.len=ncols
+                    self.row=row_idx
+                    self.data=data    
+                    
+                def _proj_1d(self, col_idx:int) -> int:
+                    '''takes a 2d index and projects it onto the corresponding index in the 1d array'''
+                    return self.row*self.len+col_idx
+                    
+                def __getitem__(self, col_idx:int) -> Any:
+                    if col_idx < 0 or col_idx >= self.len:
+                        raise IndexError
+                    idx=self._proj_1d(col_idx)
+                    return self.data[idx]
+                def __setitem__(self, col_idx:int, data:Any) -> None:
+                    idx=self._proj_1d(col_idx)
+                    self.data[idx]=data
+
+                def __str__(self):
+                    string='['
+                    for i in range(self.len):
+                        idx=self._proj_1d(i)
+                        item=self.data[idx]
+                        if i != self.len-1:
+                            string+=str(item)+', '
+                        else:
+                            string+=str(item)+']'
+                    return string
+
+
+                def __repr__(self) -> str:
+                    return self.__str__()
+
+                def __eq__(self, other: object) -> bool:
+                    lst=[]
+                    for i in range(self.len):
+                        i=self._proj_1d(i)
+                        lst.append(self.data[i])
+                    return lst == other
+                def __ne__(self, __o: object) -> bool:
+                    return not self == __o
+                
+            list_of_rows=[_row(self.ncols,i,self.data) for i in range(self.nrows)]
+        self.rows=list_of_rows
+            
+        
+
+        
 
     def __eq__(self, other: object) -> bool:
         """ Equality operator ==.
@@ -298,7 +381,6 @@ class Array2D:
         """
         # raise NotImplementedError("Array2D.__contains__")
         return item in self.data
-    
 
     def clear(self) -> None:
         """ Clear operator. Clears the Array2D.
@@ -312,8 +394,8 @@ class Array2D:
         Returns:
             None
         """
-        raise NotImplementedError("Array2D.clear")
-
+        # raise NotImplementedError("Array2D.clear")
+        self.data=Array(self.ncols*self.nrows,self.zero)
 
     def __str__(self) -> str:
         """ Return a string representation of the data and structure
@@ -327,7 +409,13 @@ class Array2D:
             str: the string representation of the data and structure.
         
         """
-        return str(self.rows)
+        string='['
+        for i,row in enumerate(self.rows):
+            if i != self.nrows-1:
+                string += str(row) + ', '
+            else:
+                string+=str(row) + ']'
+        return string
 
     def __repr__(self) -> str:
         """ Return a string representation of the data and structure.
