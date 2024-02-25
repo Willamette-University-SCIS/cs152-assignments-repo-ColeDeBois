@@ -10,6 +10,7 @@
 
 from typing import Any
 
+
 from datastructures.array import Array
 
 
@@ -42,58 +43,14 @@ class Array2D:
             ValueError: if the rows or columns are less than 0.
         """
         # raise NotImplementedError("Array2D.__init__")
+        if rows <0 or columns <0:
+            raise IndexError
         data=Array(size=rows*columns, default_item_value=default_item_value)
         
         self.data=data
         self.zero=default_item_value
         self.nrows=rows
         self.ncols=columns
-
-        class _row:
-            def __init__(self, ncols:int, row_idx:int, data:Array):
-                self.len=ncols
-                self.row=row_idx
-                self.data=data    
-                
-            def _proj_1d(self, col_idx:int) -> int:
-                '''takes a 2d index and projects it onto the corresponding index in the 1d array'''
-                return self.row*self.len+col_idx
-                
-            def __getitem__(self, col_idx:int) -> Any:
-                if col_idx < 0 or col_idx >= self.len:
-                    raise IndexError
-                idx=self._proj_1d(col_idx)
-                return self.data[idx]
-            def __setitem__(self, col_idx:int, data:Any) -> None:
-                idx=self._proj_1d(col_idx)
-                self.data[idx]=data
-
-            def __str__(self):
-                string='['
-                for i in range(self.len):
-                    idx=self._proj_1d(i)
-                    item=self.data[idx]
-                    if i != self.len-1:
-                        string+=str(item)+', '
-                    else:
-                        string+=str(item)+']'
-                return string
-
-
-            def __repr__(self) -> str:
-                return self.__str__()
-
-            def __eq__(self, other: object) -> bool:
-                lst=[]
-                for i in range(self.len):
-                    i=self._proj_1d(i)
-                    lst.append(self.data[i])
-                return lst == other
-            def __ne__(self, __o: object) -> bool:
-                return not self == __o
-        
-        list_of_rows=[_row(self.ncols,i,self.data) for i in range(rows)]
-        self.rows=list_of_rows
 
     @staticmethod   
     def from_list(items: list) -> 'Array2D':
@@ -159,7 +116,50 @@ class Array2D:
         # raise NotImplementedError("Array2D.__getitem__")
         if row_index < 0 or row_index >= self.nrows:
             raise IndexError
-        return self.rows[row_index]
+
+        class _row:
+            def __init__(self, ncols:int, row_idx:int, data:Array):
+                self.len=ncols
+                self.row=row_idx
+                self.data=data    
+                    
+            def _proj_1d(self, col_idx:int) -> int:
+                '''takes a 2d index and projects it onto the corresponding index in the 1d array'''
+                return self.row*self.len+col_idx
+                    
+            def __getitem__(self, col_idx:int) -> Any:
+                if col_idx < 0 or col_idx >= self.len:
+                    raise IndexError
+                idx=self._proj_1d(col_idx)
+                return self.data[idx]
+            def __setitem__(self, col_idx:int, data:Any) -> None:
+                idx=self._proj_1d(col_idx)
+                self.data[idx]=data
+            def __str__(self):
+                string='['
+                for i in range(self.len):
+                    idx=self._proj_1d(i)
+                    item=self.data[idx]
+                    if i != self.len-1:
+                        string+=str(item)+', '
+                    else:
+                        string+=str(item)+']'
+                return string
+
+            def __repr__(self) -> str:
+                return self.__str__()
+
+            def __eq__(self, other: object) -> bool:
+                lst=[]
+                for i in range(self.len):
+                    i=self._proj_1d(i)
+                    lst.append(self.data[i])
+                return lst == other
+            def __ne__(self, __o: object) -> bool:
+                return not self == __o
+                
+        row=_row(self.ncols, row_index, self.data)
+        return row
         
 
     @property
@@ -209,7 +209,7 @@ class Array2D:
 
         """
         # raise NotImplementedError("Array2D.resize_columns")
-        if new_columns <= 0:
+        if new_columns < 0:
             raise ValueError
 
         data_copy = self.data
@@ -253,7 +253,7 @@ class Array2D:
             ValueError: if the new_rows is less than 0.
         """
         # raise NotImplementedError("Array2D.resize_rows")
-        if new_rows <= 0:
+        if new_rows < 0:
             raise ValueError
         new_data=Array(new_rows*self.ncols, default_item_value)
         if new_rows != self.nrows:
@@ -265,57 +265,7 @@ class Array2D:
             self.data=new_data
             self.zero=default_item_value
             self.nrows=new_rows
-
-            class _row:
-                def __init__(self, ncols:int, row_idx:int, data:Array):
-                    self.len=ncols
-                    self.row=row_idx
-                    self.data=data    
-                    
-                def _proj_1d(self, col_idx:int) -> int:
-                    '''takes a 2d index and projects it onto the corresponding index in the 1d array'''
-                    return self.row*self.len+col_idx
-                    
-                def __getitem__(self, col_idx:int) -> Any:
-                    if col_idx < 0 or col_idx >= self.len:
-                        raise IndexError
-                    idx=self._proj_1d(col_idx)
-                    return self.data[idx]
-                def __setitem__(self, col_idx:int, data:Any) -> None:
-                    idx=self._proj_1d(col_idx)
-                    self.data[idx]=data
-
-                def __str__(self):
-                    string='['
-                    for i in range(self.len):
-                        idx=self._proj_1d(i)
-                        item=self.data[idx]
-                        if i != self.len-1:
-                            string+=str(item)+', '
-                        else:
-                            string+=str(item)+']'
-                    return string
-
-
-                def __repr__(self) -> str:
-                    return self.__str__()
-
-                def __eq__(self, other: object) -> bool:
-                    lst=[]
-                    for i in range(self.len):
-                        i=self._proj_1d(i)
-                        lst.append(self.data[i])
-                    return lst == other
-                def __ne__(self, __o: object) -> bool:
-                    return not self == __o
-                
-            list_of_rows=[_row(self.ncols,i,self.data) for i in range(self.nrows)]
-        self.rows=list_of_rows
-            
-        
-
-        
-
+ 
     def __eq__(self, other: object) -> bool:
         """ Equality operator ==.
 
@@ -409,13 +359,13 @@ class Array2D:
             str: the string representation of the data and structure.
         
         """
-        string='['
-        for i,row in enumerate(self.rows):
-            if i != self.nrows-1:
-                string += str(row) + ', '
-            else:
-                string+=str(row) + ']'
-        return string
+        lst=[]
+        for row_idx in range(self.nrows):
+            row=[]
+            for col_idx in range(self.ncols):
+                row.append(self.data[col_idx+row_idx*self.ncols])
+            lst.append(row)
+        return str(lst)
 
     def __repr__(self) -> str:
         """ Return a string representation of the data and structure.
