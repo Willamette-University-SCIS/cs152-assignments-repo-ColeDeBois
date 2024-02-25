@@ -44,7 +44,7 @@ class Array2D:
         """
         # raise NotImplementedError("Array2D.__init__")
         if rows <0 or columns <0:
-            raise IndexError
+            raise ValueError
         data=Array(size=rows*columns, default_item_value=default_item_value)
         
         self.data=data
@@ -157,7 +157,7 @@ class Array2D:
                 return lst == other
             def __ne__(self, __o: object) -> bool:
                 return not self == __o
-                
+
         row=_row(self.ncols, row_index, self.data)
         return row
         
