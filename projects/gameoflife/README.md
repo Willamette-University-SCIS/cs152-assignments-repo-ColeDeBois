@@ -1,6 +1,8 @@
 How to play game of life:
 
-.- run program.py
+--run program.py
+
+When inputing to the terminal, please do not try to trick the program. 
 
 Initial Starting Configuration:
 

@@ -10,11 +10,11 @@ def main():
     else: 
         filename='projects/gameoflife/'+filename+'.txt'
         with open(filename,'r') as fh:
-            size=len(fh.readline().partition(','))
+            size=len(fh.readline().split(','))
     if size == '': size=10
     world=World(int(size),filename)
 
-    speed_input=input('Enter Desired Simulation Speed From 1-10, \n type man for frame by frame: ')
+    speed_input=input('Enter Desired Simulation Speed From 1-10, \n enter man for frame by frame: \n')
     loop=True
     k=KBHit()
     if speed_input == '':
@@ -26,14 +26,19 @@ def main():
         while loop:
             loop=world.progress()
             time.sleep(time_step)
-            if k.kbhit(): break
+            if k.kbhit(): 
+                loop=False
+                k.getch()
     else:
+        loop=world.progress()
+        print('Hit enter to continue, or Q to quit')
         while loop:
-            if k.getch() == '\n':
+            khit=k.getch()
+            if khit == '\n':
                 loop=world.progress()
                 print('Hit enter to continue, or Q to quit')
-            elif k.getch() == 'q':
-                loop=False
+            elif khit == 'q':
+                break
     print('Hit enter to play again or anything else to quit \n')
     if k.getch() == '\n':
         main()
