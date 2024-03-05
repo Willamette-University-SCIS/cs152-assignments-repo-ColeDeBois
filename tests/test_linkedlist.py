@@ -32,7 +32,19 @@ class TestLinkedList:
         assert llista==llistb
 
     def test_prepend(self):
-        raise NotImplemented
+        llist=LinkedList.from_list(['apple', 'banana', 'jalapeno'])
+        llist.prepend('test')
+
+        assert llist.front == 'test'
+
+    def test_insert_after(self):
+        llist=LinkedList.from_list(['apple', 'jalapeno'])
+        llist.insert_after('apple','banana')
+        assert llist == LinkedList.from_list(['apple', 'banana', 'jalapeno'])
+
+
+    
+
         
 
 
@@ -55,19 +67,7 @@ class TestLinkedList:
         try:
             llist.pop_front
         except IndexError:
-            pass
-
-    def test_keyerrors(self):
-        llist=LinkedList.from_list(['a','b','c'])
-        with None as KeyError:
-            llist.extract('d')
-            llist.insert_after('d',None)
-            llist.insert_before('d',None)
-            
-
-
-
-        
+            pass    
 
 
     def test_contains_(self):

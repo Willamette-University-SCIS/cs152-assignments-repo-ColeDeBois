@@ -132,15 +132,18 @@ class LinkedList:
         travel=self._head
         if self.front == before_item:
             self.prepend(new_item)
-        while not done:
-            if travel == before_item:
-                prev_node=travel.previous
-                new_node=ListNode(new_item,prev_node,travel)
-                prev_node.next=new_node
-                travel.previous=new_node
-                done=True
-            elif travel == None:
-                raise KeyError
+        else:
+            while not done:
+                if travel.item == before_item:
+                    prev_node=travel.previous
+                    new_node=ListNode(new_item,prev_node,travel)
+                    prev_node.next=new_node
+                    travel.previous=new_node
+                    self._length+=1
+                    done=True
+                elif travel == None:
+                    raise KeyError
+                travel=travel.next
             
 
 
@@ -171,11 +174,12 @@ class LinkedList:
             self.append(new_item)
         else:
             while not done:
-                if travel == after_item:
+                if travel.item == after_item:
                     next_node=travel.next
                     new_node=ListNode(new_item,travel,next_node)
                     next_node.previous=new_node
                     travel.next=new_node
+                    self._length+=1
                     done=True
                 elif travel == None:
                     raise KeyError
