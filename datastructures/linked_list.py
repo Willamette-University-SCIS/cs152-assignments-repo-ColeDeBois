@@ -49,14 +49,14 @@ class LinkedList:
             TypeError: if py_list is not a list.
         """
         # raise NotImplementedError('LinkedList.from_list')
+        if not isinstance(py_list, list):
+            raise TypeError
         llist=LinkedList()
         for item in py_list:
             llist.append(item)
         return llist
                 
-                
-                
-
+    
     def append(self, item: Any) -> None:
         """ Append an item to the end of the list.
 
@@ -127,7 +127,22 @@ class LinkedList:
         Raises:
             KeyError: if before_item is not found.
         """
-        raise NotImplementedError('LinkedList.insert_before')
+        # raise NotImplementedError('LinkedList.insert_before')
+        done =False
+        travel=self._head
+        if self.front == before_item:
+            self.prepend(new_item)
+        while not done:
+            if travel == before_item:
+                prev_node=travel.previous
+                new_node=ListNode(new_item,prev_node,travel)
+                prev_node.next=new_node
+                travel.previous=new_node
+                done=True
+            elif travel == None:
+                raise KeyError
+            
+
 
     def insert_after(self, after_item: Any, new_item: Any) -> None:
         """ Insert a new item after a specified item.
@@ -149,7 +164,22 @@ class LinkedList:
             KeyError: if after_item is not found.
         
         """
-        raise NotImplementedError('LinkedList.insert_after')
+        # raise NotImplementedError('LinkedList.insert_after')
+        done =False
+        travel=self._head
+        if self.back == after_item:
+            self.append(new_item)
+        else:
+            while not done:
+                if travel == after_item:
+                    next_node=travel.next
+                    new_node=ListNode(new_item,travel,next_node)
+                    next_node.previous=new_node
+                    travel.next=new_node
+                    done=True
+                elif travel == None:
+                    raise KeyError
+                travel=travel.next
 
     @property
     def head(self) -> ListNode | None:
@@ -241,7 +271,10 @@ class LinkedList:
         Returns:
             None
         """
-        raise NotImplementedError('LinkedList.clear')
+        # raise NotImplementedError('LinkedList.clear')
+        self._head=None
+        self._tail=None
+        self._length=0
 
     def extract(self, item: Any) -> None:
         """ Extract an item from the Linked List.
@@ -280,7 +313,6 @@ class LinkedList:
                     break
                 travel=travel.next
         self._length-=1
-
 
     @property
     def empty(self) -> bool:
@@ -400,7 +432,8 @@ class LinkedList:
         Returns:
             bool: whether the lists are not equal (deep check).
         """
-        raise NotImplementedError('LinkedList.__ne__')
+        # raise NotImplementedError('LinkedList.__ne__')
+        return not self == other
     
     def __iter__(self) -> Any:
         """ Iterator operator.
