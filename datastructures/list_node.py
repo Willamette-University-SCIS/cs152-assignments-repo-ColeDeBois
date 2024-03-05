@@ -150,7 +150,10 @@ class ListNode:
                 bool: true if the nodes are equal (deep check). false if other is not a ListNode or they are not equal.
         """
         # raise NotImplementedError("ListNode.__eq__")
-        return self.item == other.item
+        if isinstance(other, ListNode):
+            return self.item == other.item
+        else:
+            return False
 
     def __str__(self) -> str:
         """ Return a string representation of the data and structure.

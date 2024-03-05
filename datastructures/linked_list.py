@@ -141,7 +141,7 @@ class LinkedList:
                     travel.previous=new_node
                     self._length+=1
                     done=True
-                elif travel == None:
+                elif travel.next == None:
                     raise KeyError
                 travel=travel.next
             
@@ -181,7 +181,7 @@ class LinkedList:
                     travel.next=new_node
                     self._length+=1
                     done=True
-                elif travel == None:
+                elif travel.next == None:
                     raise KeyError
                 travel=travel.next
 
