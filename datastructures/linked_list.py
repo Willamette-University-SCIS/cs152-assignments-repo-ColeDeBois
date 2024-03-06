@@ -129,6 +129,8 @@ class LinkedList:
             KeyError: if before_item is not found.
         """
         # raise NotImplementedError('LinkedList.insert_before')
+        if self._count < 1:
+            raise KeyError
         done =False
         travel=self._head
         if self.front == before_item:
@@ -169,6 +171,8 @@ class LinkedList:
         
         """
         # raise NotImplementedError('LinkedList.insert_after')
+        if self._count < 1:
+            raise KeyError
         done =False
         travel=self._head
         if self.back == after_item:

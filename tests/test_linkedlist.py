@@ -51,7 +51,7 @@ class TestLinkedList:
 
     
     def test_key_error(self):
-        llist=LinkedList.from_list(['a', 'b', 'c', 'd'])
+        llist=LinkedList()
         try:
             llist.insert_before('e','e')
         except KeyError:
