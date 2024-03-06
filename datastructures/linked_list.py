@@ -28,7 +28,8 @@ class LinkedList:
         # raise NotImplementedError('LinkedList.__init__')
         self._head=None
         self._tail=None
-        self._length=0
+        self._count=0
+        
 
     @staticmethod
     def from_list(py_list: list) -> LinkedList:
@@ -75,12 +76,12 @@ class LinkedList:
         """
         # raise NotImplementedError('LinkedList.append')
         node=ListNode(item, previous_node=self._tail, next_node=None)
-        if self._length == 0:
+        if self._count == 0:
             self._head=self._tail=node
         else:
             self._tail.next=node
             self._tail=node
-        self._length+=1
+        self._count+=1
 
     def prepend(self, item: Any) -> None:
         """ Prepend an item to the beginning of the list.
@@ -101,12 +102,12 @@ class LinkedList:
         """
         # raise NotImplementedError('LinkedList.prepend')
         node=ListNode(item, previous_node=None, next_node=self._head)
-        if self._length == 0:
+        if self._count == 0:
             self._head=self._tail=node
         else:
             self._head.previous=node
             self._head=node
-        self._length+=1
+        self._count+=1
 
     def insert_before(self, before_item: Any, new_item: Any) -> None:
         """ Insert a new item before a specified item.
@@ -139,7 +140,7 @@ class LinkedList:
                     new_node=ListNode(new_item,prev_node,travel)
                     prev_node.next=new_node
                     travel.previous=new_node
-                    self._length+=1
+                    self._count+=1
                     done=True
                 elif travel.next == None:
                     raise KeyError
@@ -179,7 +180,7 @@ class LinkedList:
                     new_node=ListNode(new_item,travel,next_node)
                     next_node.previous=new_node
                     travel.next=new_node
-                    self._length+=1
+                    self._count+=1
                     done=True
                 elif travel.next == None:
                     raise KeyError
@@ -238,7 +239,7 @@ class LinkedList:
         
         """
         # raise NotImplementedError('LinkedList.front')
-        if self._length == 0:
+        if self._count == 0:
             raise IndexError
         return self.head.item
 
@@ -259,7 +260,7 @@ class LinkedList:
             IndexError: if the list is empty.
         """
         # raise NotImplementedError('LinkedList.back')
-        if self._length == 0:
+        if self._count == 0:
             raise IndexError
         return self.tail.item
 
@@ -278,7 +279,7 @@ class LinkedList:
         # raise NotImplementedError('LinkedList.clear')
         self._head=None
         self._tail=None
-        self._length=0
+        self._count=0
 
     def extract(self, item: Any) -> None:
         """ Extract an item from the Linked List.
@@ -316,7 +317,7 @@ class LinkedList:
                     prev_node.next=next_node
                     break
                 travel=travel.next
-        self._length-=1
+        self._count-=1
 
     @property
     def empty(self) -> bool:
@@ -331,7 +332,7 @@ class LinkedList:
             bool: whether the list is empty.
         """
         # raise NotImplementedError('LinkedList.empty')
-        return self._length == 0
+        return self._count == 0
 
     def pop_front(self) -> None:
         """ Remove the first item in the linked list.
@@ -350,7 +351,7 @@ class LinkedList:
             
         """
         # raise NotImplementedError('LinkedList.pop_front')
-        if self._length == 0:
+        if self._count == 0:
             raise IndexError
         new_head=self._head.next
         self._head=new_head
@@ -371,7 +372,7 @@ class LinkedList:
             IndexError: if the list is empty.
         """
         # raise NotImplementedError('LinkedList.pop_back')
-        if self._length == 0:
+        if self._count == 0:
             raise IndexError
         new_tail=self._tail.previous
         self._tail=new_tail
@@ -412,7 +413,7 @@ class LinkedList:
             bool: whether the lists are equal (deep check).
         """
         # raise NotImplementedError('LinkedList.__eq__')
-        if self._length == other._length:
+        if self._count == other._count:
             onode = other._head
             for i in self:
                 if i != onode.item:
@@ -455,7 +456,7 @@ class LinkedList:
         """
         # raise NotImplementedError('LinkedList.__iter__')
         node=self._head
-        for i in range(self._length):
+        for i in range(self._count):
             yield node.item
             node=node.next
 
@@ -475,7 +476,7 @@ class LinkedList:
         """
         # raise NotImplementedError('LinkedList.__reversed__')
         node=self._tail
-        for i in range(self._length):
+        for i in range(self._count):
             yield node.item
             node=node.previous
 
@@ -492,7 +493,7 @@ class LinkedList:
             int: the length of the LinkedList.
         """
         # raise NotImplementedError('LinkedList.__len__')
-        return self._length
+        return self._count
 
     def __str__(self) -> str:
         """ Return a string representation of the data and structure.

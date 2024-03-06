@@ -41,11 +41,14 @@ class TestLinkedList:
         llist=LinkedList.from_list(['apple', 'jalapeno'])
         llist.insert_after('apple','banana')
         assert llist == LinkedList.from_list(['apple', 'banana', 'jalapeno'])
+        
 
     def test_insert_before(self):
         llist=LinkedList.from_list(['a','b','d'])
         llist.insert_before('d','c')
         assert llist == LinkedList.from_list(['a', 'b', 'c', 'd'])
+        assert llist.back == 'd'
+
     
     def test_key_error(self):
         llist=LinkedList.from_list(['a', 'b', 'c', 'd'])
