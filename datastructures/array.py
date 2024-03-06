@@ -91,7 +91,7 @@ class Array:
                 IndexError: if the index is out of bounds.
         """
         # raise NotImplementedError('Array.__getitem__')
-        if index >= self.size:
+        if index >= self.size or index < 0:
             raise IndexError 
         return self.array[index]
     
@@ -113,7 +113,7 @@ class Array:
                 IndexError: if the index is out of bounds.
         """
         # raise NotImplementedError('Array.__setitem__')
-        if index >= self.size:
+        if index >= self.size or index < 0:
             raise IndexError
         self.array[index]=data
     
