@@ -383,6 +383,21 @@ class Array:
         for i in self:
             llist.append(i)
         return llist
+    
+    def sort(self):
+        data=[]
+        for i in self:
+            data.append(i)
+        unsorted=True
+        while unsorted:
+            unsorted=False
+            for i in range(len(self)-1,0,-1):
+                if data[i] < data[i-1]:
+                    item=data[i]
+                    data[i]=data[i-1]
+                    data[i-1]=item
+                    unsorted=True
+        self.array=np.array(data)
 
         
 

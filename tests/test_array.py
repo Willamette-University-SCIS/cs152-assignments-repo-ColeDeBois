@@ -97,6 +97,14 @@ class TestArray:
         llist=LinkedList.from_list(lst)
         assert alist==llist
 
+    def test_sort(self):
+        unsorted=[4,6,3,1]
+        sorted=[1,3,4,6]
+        sorted_array=Array.from_list(sorted)
+        unsorted_array=Array.from_list(unsorted)
+        unsorted_array.sort()
+        assert sorted_array == unsorted_array
+
 
     
     
