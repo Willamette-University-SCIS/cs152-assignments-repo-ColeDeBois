@@ -52,7 +52,7 @@ class Array:
 
     
     @staticmethod
-    def from_list(list_items: list) -> 'Array':
+    def from_list(list_items: list):
         """
         Create an Array from a Python list.
         Examples:
@@ -364,5 +364,28 @@ class Array:
             string (str): the string representation of the data and structure.
         """
         return self.array.__str__()
+    
+    def to_linked_list(self):
+        '''Convert the contents be the Astay to a Linkedist.
+        Example:
+            >> print(my_array)
+            15, 7, 17, 13, 111
+            >>> my_linked_list = my_array to_ linked
+            _list ()
+            >> print(my_linked_list)
+            [5, 7, 17, 13, 111
+        Args:
+                none
+        Returns:
+                LinkedList: a Linked List containing the items from the Array.'''
+        from datastructures.linked_list import LinkedList
+        llist=LinkedList()
+        for i in self:
+            llist.append(i)
+        return llist
+
+        
+
+
 
 

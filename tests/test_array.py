@@ -1,4 +1,5 @@
 from datastructures.array import Array
+from datastructures.linked_list import LinkedList
 
 class TestArray:
     
@@ -88,6 +89,13 @@ class TestArray:
         del array[1]
 
         assert array == Array.from_list([1,3,4])
+
+    def test_to_linked_list(self):
+        lst=[1,2,3,4]
+        array=Array.from_list(lst)
+        alist=array.to_linked_list()
+        llist=LinkedList.from_list(lst)
+        assert alist==llist
 
 
     

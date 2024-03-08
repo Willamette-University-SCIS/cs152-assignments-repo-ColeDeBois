@@ -2,7 +2,7 @@
 # Just make sure the new name starts with test_ and ends with .py.
 
 # import data structures like this:
-# from datastructures.array import Array
+from datastructures.array import Array
 from datastructures.linked_list import LinkedList
 
 
@@ -93,6 +93,13 @@ class TestLinkedList:
         lista=['apple', 'banana', 'jalapeno']
         llist=LinkedList.from_list(lista)
         assert 'apple' in llist
+
+    def test_to_array(self):
+        lista=['apple', 'banana', 'jalapeno']
+        llist=LinkedList.from_list(lista)
+        array=Array.from_list(lista)
+        larray=llist.to_array()
+        assert larray == array
 
 
 
