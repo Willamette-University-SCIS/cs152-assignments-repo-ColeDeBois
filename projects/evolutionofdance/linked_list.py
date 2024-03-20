@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import Any
 
-from datastructures.list_node import ListNode
-from datastructures.array import Array
+from list_node import ListNode
+# from datastructures.array import Array
 
 class LinkedList:
     """ Class LinkedList - representing an unordered linked list
@@ -535,20 +535,20 @@ class LinkedList:
         # raise NotImplementedError('LinkedList.__repr__')
         return self.__str__()
     
-    def to_array(self):
-        """ Convert the contents of the LinkedList to an Array.
-        Example:
-            »> print(my_linked_list)
-            15, 7, 17, 13, 111
-            >> my_array = my_linked _list. to_array ()
-            >> print(my_array)
-            15, 7, 17, 13, 111
+    # def to_array(self):
+    #     """ Convert the contents of the LinkedList to an Array.
+    #     Example:
+    #         »> print(my_linked_list)
+    #         15, 7, 17, 13, 111
+    #         >> my_array = my_linked _list. to_array ()
+    #         >> print(my_array)
+    #         15, 7, 17, 13, 111
 
-        Args:
-            none
-        Returns:
-            Array: an array containing the items from the Linked List """
-        array=Array()
-        for i in self:
-            array.append(i)
-        return array
+    #     Args:
+    #         none
+    #     Returns:
+    #         Array: an array containing the items from the Linked List """
+    #     array=Array()
+    #     for i in self:
+    #         array.append(i)
+    #     return array
