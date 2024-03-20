@@ -7,9 +7,9 @@ List of how to run it:
 
 .- run program.py
 
-.- enter number of rounds into terminal
+.- enter number of rounds into terminal 
 
-.-press any key to pause dance party at any time
+.-press any key to pause dance party at any time 
 
 .-enter 0 rounds to quit the program 
 
@@ -17,3 +17,7 @@ List of how to run it:
 Dependencies:
 
 .-Tkinter package to run the pgl.py
+
+Limitations:
+
+The bigger the screen, changed by changing the GWX and GWY constants at the top of program.py will allow for larger round requests, they don't fit on the page after ~80 rounds.
