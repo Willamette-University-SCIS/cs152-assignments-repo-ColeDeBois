@@ -24,3 +24,10 @@ class TestListStack:
         sk1.pop()
         sk1.pop()
         assert str(sk1) == '[]'
+
+    def test_len(self):
+        sk=ListStack()
+        for i in range(10):
+            sk.push('a')
+        sk.pop()
+        assert len(sk) == 9

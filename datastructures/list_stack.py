@@ -152,7 +152,7 @@ class ListStack:
         Returns:
             int: the number of items on the stack.
         """
-        return self._lst.empty
+        return len(self._lst)
 
     def __str__(self) -> str:
         """ Get the string representation of the stack.
@@ -171,7 +171,7 @@ class ListStack:
         else:
             string=''
             for i in self._lst:
-                string+=str(i)+'/n'
+                string+=str(i)+'\n'
             string.rstrip()
             return string
 

@@ -21,4 +21,11 @@ class TestArrayStack:
         sk1.push('dog')
         string='dog\ncat'
         assert str(sk1) == string
+        
+    def test_len(self):
+        sk=ArrayStack(10)
+        for i in range(10):
+            sk.push('a')
+        sk.pop()
+        assert len(sk) == 9
 

@@ -9,7 +9,7 @@ class ArrayStack:
             raising appropriate exceptions where indicated.
     """
 
-    def __init__(self, max_size: int = 0) -> None:
+    def __init__(self, max_size: int = 10) -> None:
         """ Constructor
 
         Examples:
@@ -66,7 +66,7 @@ class ArrayStack:
        if self.empty:
            raise IndexError
        item=self.top
-       self._ar[self._count]=None
+       self._ar[self._count-1]=None
        self._count-=1
        return item
 
