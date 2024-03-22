@@ -55,7 +55,9 @@ class ListStack:
         """
         if self.empty:
             raise IndexError
-        return self._lst.pop_front()
+        item=self._lst.front
+        self._lst.pop_front()
+        return item
         
 
     def clear(self) -> None:
