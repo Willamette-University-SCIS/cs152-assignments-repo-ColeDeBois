@@ -12,11 +12,23 @@ class TestListStack:
         sk2=ListStack()
         sk2.push('car') 
         assert sk1==sk2
+
     def test_push(self):
         sk1=ListStack() 
         sk1.push('cat')
+        sk1.pop()
         sk1.push('car')
         assert sk1.top == 'car'
+
+    def test_pop(self):
+        sk=ListStack()
+        sk.push('cat')
+        sk.push('dog')
+        assert sk.pop() == 'dog'
+        sk.push('rock')
+        assert sk.pop() == 'rock'
+        assert sk.pop() == 'cat'
+
     def test_str(self):
         sk1=ListStack()
         sk1.push('cat')
