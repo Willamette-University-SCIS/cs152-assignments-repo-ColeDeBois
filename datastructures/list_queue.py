@@ -1,6 +1,6 @@
 from typing import Any
 
-from linked_list import LinkedList
+from datastructures.linked_list import LinkedList
 
 
 class ListQueue:
@@ -20,7 +20,7 @@ class ListQueue:
         Returns:
             None
         """
-        raise NotImplementedError('ListQueue.__init__')
+        self._lst=LinkedList()
 
     def enqueue(self, item: Any) -> None:
         """ Enqueue an item onto the queue.
@@ -35,7 +35,7 @@ class ListQueue:
         Returns:
             None
         """
-        raise NotImplementedError('ListQueue.enqueue')
+        self._lst.append(item)
 
     def dequeue(self) -> Any:
         """ Dequeue an item from the queue and return the item.
@@ -53,7 +53,12 @@ class ListQueue:
         Raises:
             IndexError: if the queue is empty.
         """
-        raise NotImplementedError('ListQueue.dequeue')
+        if self.empty:
+            raise IndexError
+        
+        item=self.front
+        self._lst.pop_front()
+        return item
 
     def clear(self) -> None:
         """ Clear the queue.
@@ -68,7 +73,7 @@ class ListQueue:
         Returns:
             None
         """
-        raise NotImplementedError('ListQueue.clear')
+        self._lst.clear()
 
     @property
     def front(self) -> Any:
@@ -86,7 +91,9 @@ class ListQueue:
         Raises:
             IndexError: if the queue is empty.
         """
-        raise NotImplementedError('ListQueue.front')
+        if self.empty:
+            raise IndexError
+        return self._lst.front
 
     @property
     def empty(self) -> bool:
@@ -100,8 +107,7 @@ class ListQueue:
         Returns:
             bool: True if the queue is empty, False otherwise.
         """
-        raise NotImplementedError('ListQueue.empty')
-
+        return self._lst.empty
     def __eq__(self, other: object) -> bool:
         """ Check if the queue is equal to another queue.
         
@@ -117,7 +123,8 @@ class ListQueue:
         Returns:
             bool: True if the queues are equal, False otherwise.
         """
-        raise NotImplementedError('ListQueue.__eq__')
+        if isinstance(other, ListQueue):
+            return self._lst == other._lst
 
     def __ne__(self, other: object) -> bool:
         """ Check if the queue is not equal to another queue.
@@ -134,7 +141,7 @@ class ListQueue:
         Returns:
             bool: True if the queues are not equal, False otherwise.
         """
-        raise NotImplementedError('ListQueue.__ne__')
+        return not self == other
 
     def __len__(self) -> int:
         """ Get the number of items in the queue.
@@ -148,7 +155,7 @@ class ListQueue:
         Returns:
             int: the number of items in the queue.
         """
-        raise NotImplementedError('ListQueue.__len__')
+        return self._lst.__len__()
 
     def __str__(self) -> str:
         """ Get the string representation of the queue.
@@ -162,8 +169,14 @@ class ListQueue:
         Returns:
             str: the string representation of the queue.
         """
-        raise NotImplementedError('ListQueue.__str__')
-    
+        if self.empty:
+            return '[]'
+        else:
+            string=''
+            for i in self._lst:
+                string+=i+'\n'
+            string=string.rstrip()
+            return string
     def __repr__(self) -> str:
         """ Get the string representation of the queue.
         
@@ -175,5 +188,5 @@ class ListQueue:
         Returns:
             str: the string representation of the queue.
         """
-        raise NotImplementedError('ListQueue.__repr__')
+        return str(self)
     
