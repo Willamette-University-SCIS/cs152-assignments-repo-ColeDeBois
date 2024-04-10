@@ -129,6 +129,8 @@ class HashMap:
             Raises:
                 KeyError: If the key is not present in the hashmap.
         """
+        if not key in self.keys():
+            raise KeyError
         key_hash=self._hash(key,self.capacity)
         for item in self._buckets[key_hash]:
             if item[0]==key:
@@ -152,14 +154,16 @@ class HashMap:
             Returns:
                 None
             """
-        if self._count/self.capacity>self._load_factor_threshold:
-            newsize=self._new_bucket_capacity()
-            self.resize_and_rehash(newsize, self._hash)
-        
         pair=Pair(key,value)
-        key_hash=self._hash(key,self.capacity)
-        self._buckets[key_hash].append(pair)
-        self._count+=1
+        if not pair in self.items():
+            if self._count/self.capacity>self._load_factor_threshold:
+                newsize=self._new_bucket_capacity()
+                self.resize_and_rehash(newsize, self._hash)
+            
+            key_hash=self._hash(key,self.capacity)
+            self._buckets[key_hash].prepend(pair)
+            if not key in self.keys():
+                self._count+=1
         
             
 
@@ -205,6 +209,8 @@ class HashMap:
                 None
             """
         new_buckets=Array(new_table_size)
+        for idx in new_buckets:
+            idx=LinkedList()
         for bucket in self._buckets:
             for pair in bucket:
                 key_hash=self._hash(pair[0],new_table_size)
@@ -224,7 +230,8 @@ class HashMap:
             Returns:
                 None
         """
-    
+        if not key in self.keys():
+            raise KeyError
     
         key_hash=self._hash(key,self.capacity)
         llist=self._buckets[key_hash]
@@ -386,7 +393,7 @@ class HashMap:
         list=[]
         for llist in self._buckets:
             for item in llist:
-                list.append(item[0])
+                list.append(copy.deepcopy(item[0]))
         return list
 
 
@@ -412,7 +419,7 @@ class HashMap:
         list=[]
         for llist in self._buckets:
             for item in llist:
-                list.append(item[1])
+                list.append(copy.deepcopy(item[1]))
         return list
 
     def items(self) -> list:
@@ -432,7 +439,7 @@ class HashMap:
         list=[]
         for llist in self._buckets:
             for item in llist:
-                list.append(item)
+                list.append(copy.deepcopy(item))
         return list
 
     def __str__(self) -> str:
