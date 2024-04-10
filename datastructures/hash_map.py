@@ -221,8 +221,9 @@ class HashMap:
                 key_hash=self._hash(pair[0],new_table_size)
                 new_buckets[key_hash].append(pair)
 
-    
-    def __del__(self, key: Any) -> None:
+
+
+    def __del__(self) -> None:
         """ Delete an item in the hash map. Does not resize the buckets, but does remove the associated chain link.
         
             Examples:
@@ -235,15 +236,7 @@ class HashMap:
             Returns:
                 None
         """
-        if  key not in self.keys():
-            raise KeyError
-    
-        key_hash=self._hash(key,self.capacity)
-        llist=self._buckets[key_hash]
-        for i in llist:
-            if i[0]==key:
-                llist.extract(i)
-        self._count-=1
+        self.clear()
         
     def __eq__(self, other: 'HashMap') -> bool:
         """ Equality operator for the hash map. Returns true if the hash maps are equal.
@@ -314,7 +307,15 @@ class HashMap:
             Returns:
                 None
         """
-        del self[key]
+        if  key not in self.keys():
+            raise KeyError
+    
+        key_hash=self._hash(key,self.capacity)
+        llist=self._buckets[key_hash]
+        for i in llist:
+            if i[0]==key:
+                llist.extract(i)
+        self._count-=1
 
     @property
     def load_factor(self) -> float:
