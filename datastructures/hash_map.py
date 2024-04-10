@@ -156,10 +156,6 @@ class HashMap:
             """
         pair=Pair(key,value)
         if not pair in self.items():
-            if self._count/self.capacity >= self._load_factor_threshold:
-                newsize=self._new_bucket_capacity()
-                self.resize_and_rehash(newsize, self._hash)
-            
             key_hash=self._hash(key,self.capacity)
             if not key in self.keys():
                 self._buckets[key_hash].append(pair)
@@ -167,6 +163,9 @@ class HashMap:
                 del self[key]
                 self._buckets[key_hash].append(pair)
             self._count+=1
+        if self._count/self.capacity >= self._load_factor_threshold:
+                newsize=self._new_bucket_capacity()
+                self.resize_and_rehash(newsize, self._hash)
         
             
 
@@ -398,7 +397,7 @@ class HashMap:
         list=[]
         for llist in self._buckets:
             for item in llist:
-                list.append(copy.copy(item[0]))
+                list.append(item[0])
         return list
 
 

@@ -321,7 +321,7 @@ class LinkedList:
                     prev_node.next=next_node
                     break
                 travel=travel.next
-        self._count-=1
+            self._count-=1
 
     @property
     def empty(self) -> bool:
