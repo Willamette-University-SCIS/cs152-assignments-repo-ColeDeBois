@@ -161,9 +161,12 @@ class HashMap:
                 self.resize_and_rehash(newsize, self._hash)
             
             key_hash=self._hash(key,self.capacity)
-            self._buckets[key_hash].prepend(pair)
             if not key in self.keys():
-                self._count+=1
+                self._buckets[key_hash].append(pair)
+            else:
+                del self[key]
+                self._buckets[key_hash].append(pair)
+            self._count+=1
         
             
 
@@ -192,7 +195,9 @@ class HashMap:
             Returns:
                 int: The count of the hash map.
         """
-        return self._count
+        if self._count < 0:
+            return 0
+        else: return self._count
 
     def resize_and_rehash(self, new_table_size: int, new_hash_function) -> None:
         """ Resize the hash map to a new table size and rehash the items.
@@ -208,9 +213,9 @@ class HashMap:
             Returns:
                 None
             """
-        new_buckets=Array(new_table_size)
-        for idx in new_buckets:
-            idx=LinkedList()
+        new_buckets=Array(new_table_size, default_item_value=LinkedList())
+        # for idx in new_buckets:
+        #     idx=LinkedList()
         for bucket in self._buckets:
             for pair in bucket:
                 key_hash=self._hash(pair[0],new_table_size)
@@ -452,7 +457,7 @@ class HashMap:
         """
         string="HashMap count: "+str(self._count)+", Items: "
         for item in self.items():
-            string+=str(item)+", \n"
+            string+=str(item)+",\n "
         return string
     
     def __repr__(self) -> str:
