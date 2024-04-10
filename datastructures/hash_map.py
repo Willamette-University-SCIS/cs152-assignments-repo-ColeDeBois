@@ -156,7 +156,7 @@ class HashMap:
             """
         pair=Pair(key,value)
         if not pair in self.items():
-            if self._count/self.capacity>self._load_factor_threshold:
+            if self._count/self.capacity >= self._load_factor_threshold:
                 newsize=self._new_bucket_capacity()
                 self.resize_and_rehash(newsize, self._hash)
             

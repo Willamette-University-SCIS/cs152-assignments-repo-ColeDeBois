@@ -4,9 +4,18 @@
 # import data structures like this:
 # from datastructures.array import Array
 from datastructures.hash_map import HashMap
-from .car import Car
+from .car import Car, Color, Make, Model
+car1=Car(vin='123', color=Color.RED, make=Make.TOYOTA, model=Model.CAMRY)
+car2=Car(vin='456', color=Color.RED, make=Make.FORD, model=Model.FOCUS)
+car3=Car(vin='789', color=Color.RED, make=Make.HONDA, model=Model.CIVIC)
 
 class TestHashMap:
+    def test_complex_set(self):
+        hmap=HashMap()
+        hmap[car1]=1
+        hmap[car3]=3
+        assert hmap[car1] == 1
+
     def test_from_dict(self):
         hmap=HashMap.from_dictionary({'a':1,'b':2,'c':3})
         assert hmap['a'] == 1
