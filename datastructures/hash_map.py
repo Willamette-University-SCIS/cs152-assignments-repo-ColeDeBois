@@ -163,6 +163,7 @@ class HashMap:
                 del self[key]
                 self._buckets[key_hash].append(pair)
             self._count+=1
+        
         if self._count/self.capacity >= self._load_factor_threshold:
                 newsize=self._new_bucket_capacity()
                 self.resize_and_rehash(newsize, self._hash)
@@ -313,7 +314,7 @@ class HashMap:
             Returns:
                 None
         """
-        self.__del__(key)
+        del self[key]
 
     @property
     def load_factor(self) -> float:
