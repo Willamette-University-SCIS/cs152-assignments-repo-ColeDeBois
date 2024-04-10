@@ -9,3 +9,5 @@ class TestHashMap:
     def test_from_dict(self):
         hmap=HashMap().from_dictionary({'a':1,'b':2,'c':3})
         hmap
+    
+    

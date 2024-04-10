@@ -296,7 +296,7 @@ class HashMap:
             Returns:
                 None
         """
-        raise NotImplementedError
+        return self.__del__(key)
 
     @property
     def load_factor(self) -> float:
@@ -310,7 +310,7 @@ class HashMap:
             Returns:
                 float: The current load factor of the hash map.
         """
-        raise NotImplementedError
+        return self._count/self.capacity
     
     @property
     def load_factor_threshold(self) -> float:
@@ -324,7 +324,7 @@ class HashMap:
             Returns:
                 float: The load factor threshold of the hash map.
         """
-        raise NotImplementedError
+        return self._load_factor_threshold
 
 
     def __contains__(self, key: Any) -> bool:
@@ -341,7 +341,10 @@ class HashMap:
             Returns:
                 bool: True if the key is in the hash map.
         """
-        raise NotImplementedError
+        for i in self.keys():
+            if i==key:
+                return True
+        return False
 
     def clear(self) -> None:
         """ Clear the hash map. Removes all items from the hash map.
@@ -353,7 +356,7 @@ class HashMap:
             Returns:
                 None
         """
-        raise NotImplementedError
+        self._buckets=Array(self.capacity, default_item_value=LinkedList)
 
     def keys(self) -> list:
         """ Returns a view object. The view object contains the keys of the dictionary, as a list.
