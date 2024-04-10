@@ -66,7 +66,9 @@ class HashMap:
                 ValueError: If the capacity is less than 0.
                 ValueError: If the load factor threshold is less than 0 or greater than 1.
         """
-        self._buckets = Array(capacity, default_item_value=LinkedList)
+        self._buckets = Array(capacity)
+        for i in range(capacity):
+            self._buckets[i]=LinkedList()
         self._hash = hash_function 
         self._load_factor_threshold=load_factor_threshold
         self._count=0
@@ -102,7 +104,9 @@ class HashMap:
         Raises:
             TypeError: If the input is not a dictionary.
         """
-        hmap = HashMap(len(py_dict)//0.6)
+        if not isinstance(py_dict, dict):
+            raise TypeError
+        hmap = HashMap(int(len(py_dict)/0.6))
         for key, value in py_dict.items():
             hmap[key] = value
         return hmap
@@ -126,7 +130,9 @@ class HashMap:
                 KeyError: If the key is not present in the hashmap.
         """
         key_hash=self._hash(key,self.capacity)
-        self._values[key_hash].item[1]
+        for item in self._buckets[key_hash]:
+            if item[0]==key:
+                return item[1]
 
 
     def __setitem__(self, key: Any, value: Any) -> None:
@@ -146,13 +152,13 @@ class HashMap:
             Returns:
                 None
             """
-        if self._count/self.capacity>self._load_factor_thresh:
+        if self._count/self.capacity>self._load_factor_threshold:
             newsize=self._new_bucket_capacity()
             self.resize_and_rehash(newsize, self._hash)
         
         pair=Pair(key,value)
         key_hash=self._hash(key,self.capacity)
-        self._values[key_hash].append(pair)
+        self._buckets[key_hash].append(pair)
         self._count+=1
         
             
@@ -201,7 +207,7 @@ class HashMap:
         new_buckets=Array(new_table_size)
         for bucket in self._buckets:
             for pair in bucket:
-                key_hash=self._hash(pair.key,new_table_size)
+                key_hash=self._hash(pair[0],new_table_size)
                 new_buckets[key_hash].append(pair)
 
     
@@ -296,7 +302,7 @@ class HashMap:
             Returns:
                 None
         """
-        return self.__del__(key)
+        self.__del__(key)
 
     @property
     def load_factor(self) -> float:
@@ -440,6 +446,7 @@ class HashMap:
         string="HashMap count: "+str(self._count)+", Items: "
         for item in self.items():
             string+=str(item)+", \n"
+        return string
     
     def __repr__(self) -> str:
         """ Representation of the hash map.

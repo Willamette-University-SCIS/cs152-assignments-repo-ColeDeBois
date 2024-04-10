@@ -4,10 +4,15 @@
 # import data structures like this:
 # from datastructures.array import Array
 from datastructures.hash_map import HashMap
+from car import Car
 
 class TestHashMap:
     def test_from_dict(self):
-        hmap=HashMap().from_dictionary({'a':1,'b':2,'c':3})
-        hmap
+        hmap=HashMap.from_dictionary({'a':1,'b':2,'c':3})
+        assert hmap['a'] == 1
+    def test_init(self):
+        hmap=HashMap()
+        hmap['a']=1
+        assert hmap['a'] == 1
     
     
