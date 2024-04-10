@@ -235,7 +235,7 @@ class HashMap:
             Returns:
                 None
         """
-        if not key in self.keys():
+        if  key not in self.keys():
             raise KeyError
     
         key_hash=self._hash(key,self.capacity)
@@ -398,7 +398,7 @@ class HashMap:
         list=[]
         for llist in self._buckets:
             for item in llist:
-                list.append(copy.deepcopy(item[0]))
+                list.append(copy.copy(item[0]))
         return list
 
 

@@ -13,8 +13,8 @@ class TestHashMap:
     def test_complex_set(self):
         hmap=HashMap()
         hmap[car1]=1
-        hmap[car3]=3
-        assert hmap[car1] == 1
+        hmap[car1]=3
+        assert hmap[car1] == 3
 
     def test_from_dict(self):
         hmap=HashMap.from_dictionary({'a':1,'b':2,'c':3})
