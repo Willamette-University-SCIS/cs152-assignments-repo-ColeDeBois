@@ -50,17 +50,23 @@ class TestHashMap:
         for i in range(23):
             hmap[str(i)]=i
         assert len(hmap) == 23
+
     def test_capacity(self):
         hmap=HashMap(23)
         assert hmap.capacity == 23
         assert len(hmap) == 0
     
     def test_resizing(self):
-        hmap=HashMap(10, load_factor_threshold=.5)
-        for i in range(6):
+        hmap=HashMap(7)
+        ideal_cap=17
+
+        thresh=hmap.load_factor_threshold
+        iters=int(ideal_cap*thresh)
+        for i in range(iters):
             hmap[str(i)]=i
-        assert len(hmap) == 6
-        assert hmap.capacity != 10
+            
+        assert len(hmap) == iters
+        assert hmap.capacity == ideal_cap
         
     
     

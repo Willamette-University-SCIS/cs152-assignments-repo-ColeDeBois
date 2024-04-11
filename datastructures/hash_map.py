@@ -66,9 +66,9 @@ class HashMap:
                 ValueError: If the capacity is less than 0.
                 ValueError: If the load factor threshold is less than 0 or greater than 1.
         """
-        self._buckets = Array(capacity)
+        self._buckets = Array()
         for i in range(capacity):
-            self._buckets[i]=LinkedList()
+            self._buckets.append(LinkedList())
         self._capacity = capacity
         self._hash = hash_function 
         self._load_factor_threshold=load_factor_threshold
@@ -220,9 +220,9 @@ class HashMap:
             Returns:
                 None
             """
-        new_buckets=Array(new_table_size)
+        new_buckets=Array()
         for i in range(new_table_size):
-            self._buckets[i]=LinkedList()
+            new_buckets.append(LinkedList())
         for bucket in self._buckets:
             for pair in bucket:
                 key_hash=new_hash_function(pair[0],new_table_size)
