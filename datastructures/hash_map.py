@@ -155,21 +155,11 @@ class HashMap:
             Returns:
                 None
             """
-        
-        # if not pair in self.items():
-        #     key_hash=self._hash(key,self.capacity)
-        #     if not key in self.keys():
-        #         self._buckets[key_hash].append(pair)
-        #     else:
-        #         del self[key]
-        #         self._buckets[key_hash].append(pair)
-        #     self._count+=1
-        
-        if self._count/self.capacity >= self._load_factor_threshold:
-                newsize=self._new_bucket_capacity()
-                self.resize_and_rehash(newsize, self._hash)
-        
-        
+        # 3 cases: 
+        # key is not in the hashmap, 
+        # key is in the hashmap and the value is the same 
+        # key is in the hashmap and the value is different
+      
         pair=Pair(key,value)
         key_hash=self._hash(key,self.capacity)
         bucket=self._buckets[key_hash]
@@ -180,13 +170,9 @@ class HashMap:
         bucket.append(pair)
         self._count+=1
 
-        
-
-        
-        # 3 cases: 
-        # key is not in the hashmap, 
-        # key is in the hashmap and the value is the same 
-        # key is in the hashmap and the value is different
+        if self._count/self.capacity >= self._load_factor_threshold:
+                newsize=self._new_bucket_capacity()
+                self.resize_and_rehash(newsize, self._hash)
         
         
             
