@@ -38,7 +38,7 @@ class TestHashMap:
         assert len(hmap) == 2
 
     def test_reset(self):
-        hmap=HashMap()
+        hmap=HashMap(23)
         for i in range(10):
             hmap[str(i)]=i
         hmap['5']=7
@@ -46,14 +46,21 @@ class TestHashMap:
         assert len(hmap.items()) == 10
     
     def test_set_capacity(self):
-        hmap=HashMap()
-        for i in range(100):
+        hmap=HashMap(37)
+        for i in range(23):
             hmap[str(i)]=i
-        assert len(hmap) == 100
+        assert len(hmap) == 23
     def test_capacity(self):
         hmap=HashMap(23)
         assert hmap.capacity == 23
         assert len(hmap) == 0
+    
+    def test_resizing(self):
+        hmap=HashMap(10, load_factor_threshold=.5)
+        for i in range(6):
+            hmap[str(i)]=i
+        assert len(hmap) == 6
+        assert hmap.capacity != 10
         
     
     

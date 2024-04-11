@@ -69,6 +69,7 @@ class HashMap:
         self._buckets = Array(capacity)
         for i in range(capacity):
             self._buckets[i]=LinkedList()
+        self._capacity = capacity
         self._hash = hash_function 
         self._load_factor_threshold=load_factor_threshold
         self._count=0
@@ -154,19 +155,39 @@ class HashMap:
             Returns:
                 None
             """
-        pair=Pair(key,value)
-        if not pair in self.items():
-            key_hash=self._hash(key,self.capacity)
-            if not key in self.keys():
-                self._buckets[key_hash].append(pair)
-            else:
-                del self[key]
-                self._buckets[key_hash].append(pair)
-            self._count+=1
+        
+        # if not pair in self.items():
+        #     key_hash=self._hash(key,self.capacity)
+        #     if not key in self.keys():
+        #         self._buckets[key_hash].append(pair)
+        #     else:
+        #         del self[key]
+        #         self._buckets[key_hash].append(pair)
+        #     self._count+=1
         
         if self._count/self.capacity >= self._load_factor_threshold:
                 newsize=self._new_bucket_capacity()
                 self.resize_and_rehash(newsize, self._hash)
+        
+        
+        pair=Pair(key,value)
+        key_hash=self._hash(key,self.capacity)
+        bucket=self._buckets[key_hash]
+        for item in bucket:
+            if item[0]==key:
+                bucket.extract(item)
+                self._count-=1
+        bucket.append(pair)
+        self._count+=1
+
+        
+
+        
+        # 3 cases: 
+        # key is not in the hashmap, 
+        # key is in the hashmap and the value is the same 
+        # key is in the hashmap and the value is different
+        
         
             
 
@@ -182,7 +203,7 @@ class HashMap:
             Returns:
                 int: The capacity of the hash map.
         """
-        return len(self._buckets)
+        return self._capacity
 
     def __len__(self) -> int:
         """ Length operator for the hash map. Returns the count of the hash map.
@@ -213,13 +234,18 @@ class HashMap:
             Returns:
                 None
             """
-        new_buckets=Array(new_table_size, default_item_value=LinkedList())
-        # for idx in new_buckets:
-        #     idx=LinkedList()
+        new_buckets=Array(new_table_size)
+        for i in range(new_table_size):
+            self._buckets[i]=LinkedList()
         for bucket in self._buckets:
             for pair in bucket:
-                key_hash=self._hash(pair[0],new_table_size)
+                key_hash=new_hash_function(pair[0],new_table_size)
                 new_buckets[key_hash].append(pair)
+        self._buckets=new_buckets
+        self._capacity=new_table_size
+        self._hash=new_hash_function
+          
+            
 
 
 
@@ -228,10 +254,7 @@ class HashMap:
         
             Examples:
                 >>> hashmap = HashMap(23)
-                >>> del hashmap['x']
-            
-            Args:
-                key (Any): The key to delete.
+                >>> del hashmap
                 
             Returns:
                 None
@@ -456,10 +479,9 @@ class HashMap:
                 >>> print(hashmap)
                 HashMap count: 0, Items: Array(
         """
-        string="HashMap count: "+str(self._count)+", Items: "
-        for item in self.items():
-            string+=str(item)+",\n "
+        string="HashMap count: "+str(self._count)+", Items: " + str(self.items())
         return string
+        
     
     def __repr__(self) -> str:
         """ Representation of the hash map.
