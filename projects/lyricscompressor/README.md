@@ -9,7 +9,7 @@ To start, run program.py
       * if there is nothing in storage, you'll be returned to the main menu
       * if there is something in storage, you'll be able to either:
         * delete it
-        * move it to memory (for decompressing or view the word positions)
+        * move it to memory (for decompressing or viewing the word positions)
         * or do nothing and return to the main menu
 
 Once theres lyrics in memory you'll have the options from before or you can:
@@ -22,7 +22,9 @@ Warnings:
 * providing inputs that are not listed will force you to return to the main menu
 
 ## Screenshots:
-![Output](https://github.com/Willamette-University-SCIS/cs152-assignments-repo-ColeDeBois/assets/112717966/048a90ef-4057-470a-a27f-1db20480f938)
+[Output.pdf](https://github.com/Willamette-University-SCIS/cs152-assignments-repo-ColeDeBois/files/14972391/Output.pdf)
+
+
 
 
 
