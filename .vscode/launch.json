@@ -2,7 +2,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Module",
+            "name": "Python Debugger: lyricscompressor",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "projects.lyricscompressor.program",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: gameoflife",
             "type": "debugpy",
             "request": "launch",
             "module": "projects.gameoflife.program",
