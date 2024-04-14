@@ -22,6 +22,7 @@ Warnings:
 * providing inputs that are not listed will force you to return to the main menu
 
 ## Screenshots:
+![Output](https://github.com/Willamette-University-SCIS/cs152-assignments-repo-ColeDeBois/assets/112717966/048a90ef-4057-470a-a27f-1db20480f938)
 
 
 
