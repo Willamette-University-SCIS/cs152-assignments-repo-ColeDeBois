@@ -190,3 +190,20 @@ class ListQueue:
         """
         return str(self)
     
+    def __contains__(self, item: Any) -> bool:
+        """ Check if the queue contains the item.
+        
+        Examples:
+            >>> queue = ListQueue()
+            >>> queue.enqueue('cat')
+            >>> print('cat' in queue)
+            True
+        
+        Args:
+            item (Any): the item to check for.
+        
+        Returns:
+            bool: True if the queue contains the item, False otherwise.
+        """
+        return item in self._lst
+    

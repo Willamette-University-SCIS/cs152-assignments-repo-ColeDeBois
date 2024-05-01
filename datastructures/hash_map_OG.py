@@ -33,7 +33,7 @@ class HashMap:
     default_load_factor_threshold = 0.6
 
     def default_hash_function(key: Any, capacity: int) -> int:
-        """ Default hash function for the HashMap classl, supports scalar and iterable keys.
+        """ Default hash function for the HashMap class, supports scalar and iterable keys.
             
             Args:
                 key (Any): The key to hash.
@@ -66,33 +66,23 @@ class HashMap:
                 ValueError: If the capacity is less than 0.
                 ValueError: If the load factor threshold is less than 0 or greater than 1.
         """
-        if hash_function is not None and not callable(hash_function):
-            raise TypeError('Hash Function is not a function')
-        
-        if capacity < 0:
-            raise ValueError('Capacity must be greater than 0')
-        
-        if not (0 < load_factor_threshold < 1):
-            raise ValueError('Load factor threshold must be between 0 and 1')
-        
-        self._capacity = capacity
-        self._load_factor_threshold = load_factor_threshold
-        self._hash_function = hash_function #if hash_function is not None else lambda key: sum([hash(val) for val in key]) % capacity if isinstance(key, Iterable) else hash(key) % capacity
-        self._buckets = Array(capacity)
-        
+        self._buckets = Array()
         for i in range(capacity):
-            self._buckets[i] = LinkedList()
+            self._buckets.append(LinkedList())
+        self._capacity = capacity
+        self._hash = hash_function 
+        self._load_factor_threshold=load_factor_threshold
+        self._count=0
         
-        self._hash_function = hash_function
-        self._count = 0
+
+
     
     def _new_bucket_capacity(self) -> int:
         """ Private method to determine the best new bucket size based on the current count and the load factor threshold.
             Returns:
                 int: The best bucket size.
         """
-        new_capacity = int(self._capacity * 2)
-        return nextprime(new_capacity) 
+        return nextprime(int(self._count / self._load_factor_threshold)) 
 
     @staticmethod
     def from_dictionary(py_dict: dict) -> HashMap:
@@ -116,15 +106,11 @@ class HashMap:
             TypeError: If the input is not a dictionary.
         """
         if not isinstance(py_dict, dict):
-            raise TypeError('Input must be a dictionary')
-        
-        bucket_size = nextprime(len(py_dict) / HashMap.default_load_factor_threshold)
-        hash_map = HashMap(bucket_size, HashMap.default_hash_function, HashMap.default_load_factor_threshold)
-
+            raise TypeError
+        hmap = HashMap(int(len(py_dict)/0.6))
         for key, value in py_dict.items():
-            hash_map[key] = value
-
-        return hash_map 
+            hmap[key] = value
+        return hmap
 
     def __getitem__(self, key: Any) -> Any:
         """ Bracket operator for getting a value from the hash map. If the key is not present, raise a KeyError.
@@ -144,11 +130,13 @@ class HashMap:
             Raises:
                 KeyError: If the key is not present in the hashmap.
         """
-        for pair in self._buckets[self._hash_function(key, self.capacity)]:
-            if pair.key == key:
-                return pair.value
+        if not key in self.keys():
+            raise KeyError
+        key_hash=self._hash(key,self.capacity)
+        for item in self._buckets[key_hash]:
+            if item[0]==key:
+                return item[1]
 
-        raise KeyError('Key is not present in the HashMap')
 
     def __setitem__(self, key: Any, value: Any) -> None:
         """ Bracket operator for setting a value in the hash map. If the key is already present, replace the value.
@@ -167,15 +155,26 @@ class HashMap:
             Returns:
                 None
             """
-        if self.load_factor > self._load_factor_threshold:
-            self.resize_and_rehash(self._new_bucket_capacity(), self._hash_function)
+        # 3 cases: 
+        # key is not in the hashmap, 
+        # key is in the hashmap and the value is the same 
+        # key is in the hashmap and the value is different
+      
+        pair=Pair(key,value)
+        key_hash=self._hash(key,self.capacity)
+        bucket=self._buckets[key_hash]
+        for item in bucket:
+            if item[0]==key:
+                bucket.extract(item)
+                self._count-=1
+        bucket.append(pair)
+        self._count+=1
 
-        if key in self.keys():
-            self._buckets[self._hash_function(key, self.capacity)].extract(Pair(key, self[key]))
-            self._count -= 1              
+        if self._count/self.capacity >= self._load_factor_threshold:
+                newsize=self._new_bucket_capacity()
+                self.resize_and_rehash(newsize, self._hash)
         
-        self._buckets[self._hash_function(key, self.capacity)].append(Pair(key, value))
-        self._count += 1
+        
             
 
     @property
@@ -190,7 +189,7 @@ class HashMap:
             Returns:
                 int: The capacity of the hash map.
         """
-        return len(self._buckets)
+        return self._capacity
 
     def __len__(self) -> int:
         """ Length operator for the hash map. Returns the count of the hash map.
@@ -203,7 +202,9 @@ class HashMap:
             Returns:
                 int: The count of the hash map.
         """
-        return self._count
+        if self._count < 0:
+            return 0
+        else: return self._count
 
     def resize_and_rehash(self, new_table_size: int, new_hash_function) -> None:
         """ Resize the hash map to a new table size and rehash the items.
@@ -219,13 +220,32 @@ class HashMap:
             Returns:
                 None
             """
-        new_hash_map = HashMap(new_table_size, new_hash_function)
-
+        new_buckets=Array()
+        for i in range(new_table_size):
+            new_buckets.append(LinkedList())
         for bucket in self._buckets:
-            for item in bucket:
-                new_hash_map[item.key] = item.value
+            for pair in bucket:
+                key_hash=new_hash_function(pair[0],new_table_size)
+                new_buckets[key_hash].append(pair)
+        self._buckets=new_buckets
+        self._capacity=new_table_size
+        self._hash=new_hash_function
+          
+            
 
-        self.__dict__.update(new_hash_map.__dict__)
+
+
+    def __del__(self) -> None:
+        """ Delete an item in the hash map. Does not resize the buckets, but does remove the associated chain link.
+        
+            Examples:
+                >>> hashmap = HashMap(23)
+                >>> del hashmap
+                
+            Returns:
+                None
+        """
+        self.clear()
         
     def __eq__(self, other: 'HashMap') -> bool:
         """ Equality operator for the hash map. Returns true if the hash maps are equal.
@@ -242,10 +262,14 @@ class HashMap:
             Returns:
                 bool: True if the hash maps are equal.
             """
-        if not isinstance(other, HashMap):
-            return False
-
-        return self._count == other._count and self._buckets == other._buckets
+        if isinstance(other,HashMap):
+            if self.capacity==other.capacity and self._count==other._count:
+                for i in range(len(self)):
+                    if self._buckets[i]!=other._buckets[i]:
+                        return False
+                return True
+        return False
+                
     
     def __ne__(self, other: 'HashMap') -> bool:
         """ Inequality operator for the hash map. Returns true if the hash maps are not equal.
@@ -263,7 +287,7 @@ class HashMap:
                 bool: True if the hash maps are not equal.
             """
         
-        return not self.__eq__(other)
+        return not self==other
 
     def __iter__(self) -> Any:
         """ Iterator for the hash map. Returns an iterator of the keys.
@@ -276,9 +300,9 @@ class HashMap:
             Returns:    
                 Any: An iterator of the keys.
         """
-        for chain in self._buckets:
-            for item_pair in chain:
-                yield item_pair.key
+        for llist in self._buckets:
+            for item in llist:
+                yield item[0]
 
     def __delitem__(self, key: Any) -> None:
         """ Delete an item in the hash map. Does not resize the buckets, but does remove the associated chain link.
@@ -292,11 +316,15 @@ class HashMap:
             Returns:
                 None
         """
-        if key not in self.keys():
-            raise KeyError('Key is not present in the HashMap')
-        
-        self._buckets[self._hash_function(key, self.capacity)].extract(Pair(key, self[key])) 
-        self._count -= 1
+        if  key not in self.keys():
+            raise KeyError
+    
+        key_hash=self._hash(key,self.capacity)
+        llist=self._buckets[key_hash]
+        for i in llist:
+            if i[0]==key:
+                llist.extract(i)
+        self._count-=1
 
     @property
     def load_factor(self) -> float:
@@ -310,7 +338,7 @@ class HashMap:
             Returns:
                 float: The current load factor of the hash map.
         """
-        return self._count / self.capacity
+        return self._count/self.capacity
     
     @property
     def load_factor_threshold(self) -> float:
@@ -341,10 +369,9 @@ class HashMap:
             Returns:
                 bool: True if the key is in the hash map.
         """
-        for item_pair in self._buckets[self._hash_function(key, self.capacity)]:
-            if item_pair.key == key:
+        for i in self.keys():
+            if i==key:
                 return True
-
         return False
 
     def clear(self) -> None:
@@ -357,8 +384,7 @@ class HashMap:
             Returns:
                 None
         """
-        hash_map = HashMap(self.capacity, self._hash_function, self._load_factor_threshold)
-        self.__dict__.update(hash_map.__dict__)
+        self._buckets=Array(self.capacity, default_item_value=LinkedList)
 
     def keys(self) -> list:
         """ Returns a view object. The view object contains the keys of the dictionary, as a list.
@@ -379,11 +405,12 @@ class HashMap:
             Returns:
                 list: The keys of the hash map.
         """
-        map_keys = []
-        for key in self:
-            map_keys.append(copy.copy(key))
+        list=[]
+        for llist in self._buckets:
+            for item in llist:
+                list.append(item[0])
+        return list
 
-        return map_keys
 
     def values(self) -> list:
         """ Returns a view object. The view object contains the values of the dictionary, as a list.
@@ -404,12 +431,11 @@ class HashMap:
             Returns:
                 list: The values of the hash map.
         """
-        map_values = []
-        for chain in self._buckets:
-            for item in chain:
-                map_values.append(copy.copy(item.value))
-
-        return map_values
+        list=[]
+        for llist in self._buckets:
+            for item in llist:
+                list.append(copy.deepcopy(item[1]))
+        return list
 
     def items(self) -> list:
         """ Returns a view object. The view object contains the key-value pairs of the dictionary, as a list of tuples.
@@ -425,12 +451,11 @@ class HashMap:
             Returns:
                 list: The items of the hash map.
         """
-        item_tuples = []
-        for chain in self._buckets:
-            for item in chain:
-                item_tuples.append(copy.copy(item))
-
-        return item_tuples
+        list=[]
+        for llist in self._buckets:
+            for item in llist:
+                list.append(copy.deepcopy(item))
+        return list
 
     def __str__(self) -> str:
         """ String representation of the hash map.
@@ -438,15 +463,11 @@ class HashMap:
             Examples:
                 >>> hashmap = HashMap(23)
                 >>> print(hashmap)
-                {}
+                HashMap count: 0, Items: Array(
         """
-        string = '{'
-        for bucket in self._buckets:
-            for item in bucket:
-                string += f'{item.key}: {item.value}, '
-        string = string[:-2]
-        string += '}'
+        string="HashMap count: "+str(self._count)+", Items: " + str(self.items())
         return string
+        
     
     def __repr__(self) -> str:
         """ Representation of the hash map.
@@ -454,6 +475,6 @@ class HashMap:
             Examples:
                 >>> hashmap = HashMap(23)
                 >>> print(hashmap)
-                {}
+                HashMap count: 0, Items: Array(
         """
-        return str(self)
+        return self.__str__()

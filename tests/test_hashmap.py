@@ -3,7 +3,7 @@
 
 # import data structures like this:
 # from datastructures.array import Array
-from datastructures.hash_map import HashMap
+from datastructures.hash_map_OG import HashMap
 from .car import Car, Color, Make, Model
 car1=Car(vin='123', color=Color.RED, make=Make.TOYOTA, model=Model.CAMRY)
 car2=Car(vin='456', color=Color.RED, make=Make.FORD, model=Model.FOCUS)

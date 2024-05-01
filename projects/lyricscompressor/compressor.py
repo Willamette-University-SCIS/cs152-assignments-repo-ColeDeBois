@@ -1,4 +1,4 @@
-from datastructures.hash_map import HashMap
+from datastructures.hash_map_OG import HashMap
 
 
 class Compressor:

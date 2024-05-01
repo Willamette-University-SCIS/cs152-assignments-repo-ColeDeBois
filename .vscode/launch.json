@@ -2,6 +2,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: dijkstra",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "projects.dijkstra.program",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python Debugger: lyricscompressor",
             "type": "debugpy",
             "request": "launch",
