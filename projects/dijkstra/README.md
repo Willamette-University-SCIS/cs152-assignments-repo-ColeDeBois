@@ -2,7 +2,12 @@
 
 With this you'll be able to see the shortest possible flight plan from airport to airport by inputing the starting airport code and the ending airport code. See bottom section for supported airports. 
 
-To check routes from the same airport, re-enter the same origin airport to avoid running the algorithm repeatably.
+### tips
+- To check routes from the same airport, re-enter the same origin airport to avoid running the algorithm repeatably.
+- Inputs are not case-sensitive!
+- Run program.py to try!
+
+Program uses a graph of airports and flights being the vertexes and the edges, and uses dijkstra's algorithm to find the shortest path between airports. 'haversine' package required to run.
 
 
 ## Example Run
