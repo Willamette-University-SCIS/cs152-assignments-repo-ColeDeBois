@@ -1,8 +1,6 @@
 
 # Bearcat Beats
 
-## Level 1
-
 ### BBLibrary class
 
 This class is the primary class that stores the songs and playlists. It uses a dictionary (hash map) for storing so there are no duplicate songs, and to make sure that the songs will have a constant lookup time using their ids as their keys. A dictionary (hash map) is also used for playlists so that they can be easily called using constant time by name, and so that there cannot be playlists with the same name.
