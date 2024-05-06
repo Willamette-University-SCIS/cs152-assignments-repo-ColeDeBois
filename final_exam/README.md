@@ -9,15 +9,15 @@ This class is the primary class that stores the songs and playlists. It uses a d
 
 #### Class Methods
 
-    'import_music_library(filename: str)'
+    import_music_library(filename: str)
 
-passing in the name of the .csv file that contains each song by line in the format of 'Title, Artist, Album, Duration (in seconds)' these songs will be stored in the library.
+add a bunch of songs into the library by passing in the name of the .csv file that contains each song by line in the format of 'Title, Artist, Album, Duration (in seconds)'.
 
-    'add_song_to_library(title: str, artist: str, album: str, duration_in_seconds: int) -> None' 
+    add_song_to_library(title: str, artist: str, album: str, duration_in_seconds: int) -> None 
 
 allows for adding individual songs to the library.
 
-    'display_library()'
+    display_library()
 
 will print the library to the terminal, song by song in order of addition. In the format of Id, Title, Artist, Album, Duration (seconds)
 
@@ -39,11 +39,13 @@ allows you to play either the library or a playlist but with the order shuffled.
 
     search(search_criteria: str, playlist_name: str | None=None) -> None
 
-allows you to enter any string and find the songs that have that substring within its title or artist. Efficiency is $$O(n)*2*O(k)$$ where $$n$$ is the size of library and $$k$$ is the ratio of the search criteria to the typical length of the artist and title.
+allows you to enter any string and find the songs that have that substring within its title or artist. Efficiency is 
+$$O(n)2O(k)$$ 
+where n is the size of library and k is the ratio of the search criteria to the typical length of the artist and title.
 
 ### Song class
 
-This class is how the information of the songs are stored, using a dataclass object. The information is stored as such:
+This class is how the information of the songs are stored, using a dataclass object. Utilizing a custom dataclass for songs allows us to give it a custom `__str__` method that can be used everytime we need to print a song to the terminal. The information is stored as such:
 
     id: int
     title: str
