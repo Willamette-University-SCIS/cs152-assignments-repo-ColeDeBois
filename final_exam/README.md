@@ -58,3 +58,56 @@ This class is responsible for storing information needed for songs. It utilizes 
 
     name: str
     songs: LinkedList[int]
+
+## Example Outputs
+    lib.play_songs(my_playlist) Output:
+    Playing 0, Watermelon Sugar, Harry Styles, Fine Line, 174 seconds, 0
+    Playing 1, As It Was, Harry Styles, Harry's House, 169 seconds, 0
+    Playing 2, Adore You, Harry Styles, Fine Line, 201 seconds, 0
+
+
+    lib.shuffle_play(my_playlist) Output:
+    Playing 0, Watermelon Sugar, Harry Styles, Fine Line, 174 seconds, 1
+    Playing 2, Adore You, Harry Styles, Fine Line, 201 seconds, 1
+    Playing 1, As It Was, Harry Styles, Harry's House, 169 seconds, 1
+
+
+    lib.search("Harry") Output:
+    0, Watermelon Sugar, Harry Styles, Fine Line, 174 seconds, 2
+    1, As It Was, Harry Styles, Harry's House, 169 seconds, 2
+    2, Adore You, Harry Styles, Fine Line, 201 seconds, 2
+
+
+    lib.search("Harry", "my_playlist") Output:
+    Library:
+    ID, Title, Artist, Album, Duration, Plays
+    0, Watermelon Sugar, Harry Styles, Fine Line, 174 seconds, 2
+    1, As It Was, Harry Styles, Harry's House, 169 seconds, 2
+    2, Adore You, Harry Styles, Fine Line, 201 seconds, 2
+    3, Levitating, Dua Lipa, Future Nostalgia, 203 seconds, 0
+    4, Blinding Lights, The Weeknd, After Hours, 200 seconds, 0
+    5, Heat Waves, Glass Animals, Dreamland, 238 seconds, 0
+    6, Industry Baby, Lil Nas X, Montero, 136 seconds, 0
+    7, Shivers, Ed Sheeran, =, 213 seconds, 0
+    8, Bad Habits, Ed Sheeran, =, 231 seconds, 0
+    9, STAY (with Justin Bieber), The Kid LAROI, Over You, 166 seconds, 0
+    10, Leave The Door Open, Silk Sonic, An Evening with Silk Sonic, 256 seconds, 0
+    11, Drivers License, Olivia Rodrigo, Sour, 245 seconds, 0
+    12, Good 4 U, Olivia Rodrigo, Sour, 178 seconds, 0
+    13, Happier Than Ever, Billie Eilish, Happier Than Ever, 299 seconds, 0
+    14, Peaches (feat. Daniel Caesar & Giveon), Justin Bieber, Justice, 198 seconds, 0
+    15, Montero (Call Me By Your Name), Lil Nas X, Montero, 133 seconds, 0
+    16, Don't Start Now, Dua Lipa, Future Nostalgia, 183 seconds, 0
+    17, Save Your Tears, The Weeknd, After Hours, 215 seconds, 0
+    18, positions, Ariana Grande, positions, 168 seconds, 0
+    19, 7 rings, Ariana Grande, Thank U, 180 seconds, 0
+    20, Without Me, Halsey, Manic, 185 seconds, 0
+    21, Someone You Loved, Lewis Capaldi, Divinely Uninspired to a Hellish Extent, 182 seconds, 0
+    22, Shallow, Lady Gaga & Bradley Cooper, A Star Is Born Soundtrack, 216 seconds, 0
+    23, Havana (feat. Young Thug), Camila Cabello, Camila, 212 seconds, 0
+    24, Dance Monkey, Tones and I, The Kids Are Coming, 207 seconds, 0
+    25, Señorita, Shawn Mendes with Camila Cabello, Shawn Mendes, 191 seconds, 0
+    26, Sunflower (Spiderman: Into the Spider-Verse), Post Malone & Swae Lee, Spider-Man: Into the Spider-Verse Soundtrack, 159 seconds, 0
+    27, The Box, Roddy Ricch, Please Excuse Me for Being Antisocial, 210 seconds, 0
+    28, Rockstar, Post Malone, Beerbongs & Bentleys, 217 seconds, 0
+    29, Old Town Road (Remix), Lil Nas X (feat. Billy Ray Cyrus), Old Town Road EP, 157 seconds, 0
