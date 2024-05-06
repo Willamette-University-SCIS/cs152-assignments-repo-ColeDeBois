@@ -2,6 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: Final Exam",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "final_exam.program",
+        },
+        {
             "name": "Python Debugger: dijkstra",
             "type": "debugpy",
             "request": "launch",
