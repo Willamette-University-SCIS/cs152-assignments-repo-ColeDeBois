@@ -10,7 +10,7 @@ class AVLNode(Generic[K, V]):
         self._value = value
         self._left = left
         self._right = right
-        self._height = 0
+        self._height = 1
     
     @property 
     def key(self) -> K:
@@ -63,11 +63,6 @@ class AVLNode(Generic[K, V]):
         return string
 
 # datastructures.avltree.AVLTree
-'''
-to do:
-- delete
-- heights (likely the cause for bad ordering (ie balance factor is off bc heights are off))
-'''
 class AVLTree(IAVLTree[K, V], Generic[K, V]):
     def __init__(self, starting_sequence: Optional[Sequence[Tuple[K, V]]]=None) -> None:
         self._root:AVLNode = None
@@ -187,23 +182,33 @@ class AVLTree(IAVLTree[K, V], Generic[K, V]):
             node.height = 1 + max(self._height(node.left), self._height(node.right))
             return self._balance_tree(node)
         
-        
-
-            
-    
     def inorder(self, visit: Callable[[V], None] | None = None) -> List[K]: 
         def _inorder(current, keys):
             if current is not None:
                 _inorder(current.left, keys)
+                if visit is not None:
+                    visit(current.value)
                 keys.append(current.key)
                 _inorder(current.right, keys)
         keys = []
         _inorder(self._root, keys)
         return keys
+    
+    def values(self) -> List[V]:
+        def _inorder(current, vals):
+            if current is not None:
+                _inorder(current.left, vals)
+                vals.append(current.value)
+                _inorder(current.right, vals)
+        values = []
+        _inorder(self._root, values)
+        return values
         
     def preorder(self, visit: Callable[[V], None] | None = None) -> List[K]: 
         def _preorder(current, keys):
             if current is not None:
+                if visit is not None:
+                    visit(current.value)
                 keys.append(current.key)
                 _preorder(current.left, keys)
                 _preorder(current.right, keys)
@@ -216,6 +221,8 @@ class AVLTree(IAVLTree[K, V], Generic[K, V]):
             if current is not None:
                 _postorder(current.left, keys)
                 _postorder(current.right, keys)
+                if visit is not None:
+                    visit(current.value)
                 keys.append(current.key)
         keys = []
         _postorder(self._root, keys)
@@ -227,6 +234,8 @@ class AVLTree(IAVLTree[K, V], Generic[K, V]):
         que.enqueue(self._root)
         while len(que) > 0:
             node = que.dequeue()
+            if visit is not None:
+                    visit(node.value)
             keys.append(node.key)
             if node.left is not None:
                 que.enqueue(node.left)

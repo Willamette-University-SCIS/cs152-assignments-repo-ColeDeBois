@@ -1,7 +1,7 @@
 import pytest
 import copy
 
-from .car import Car, Color, Make, Model
+from tests.car import Car, Color, Make, Model
 
 class TestCopyMethods:
     @pytest.fixture
