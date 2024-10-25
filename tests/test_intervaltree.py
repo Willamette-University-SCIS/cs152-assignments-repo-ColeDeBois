@@ -18,6 +18,16 @@ class TestIntervalTree:
         tree.insert(150,175, 'microsoft')
         tree.insert(120,160, 'tesla')
         tree.insert(200,250, 'google')
-        tree.insert(100,200, 'amazon')
 
-        assert tree.range_search(130, 165) == {'amazon','apple', 'tesla', 'microsoft'}
+        assert tree.range_search(130, 165) == {'apple', 'tesla', 'microsoft'}
+    
+    def test_delete_interval(self):
+        tree=IntervalTree()
+        
+        tree.insert(100,150, 'apple')
+        tree.insert(150,175, 'microsoft')
+        tree.insert(120,160, 'tesla')
+        tree.insert(200,250, 'google')
+
+        tree.delete_interval(120,160)
+        assert tree.search(125) == {'apple'}

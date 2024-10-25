@@ -15,7 +15,7 @@ class IntervalNode():
             self.max = high
 
     def __repr__(self) -> str:
-        string = f'[{self.low}, {self.high}], max = {self.max}'
+        string = f'[{self.low}, {self.high}], max = {self.max}, Tree:{self.data}'
         return string
 
 class IntervalTree:
@@ -76,7 +76,6 @@ class IntervalTree:
     def search(self, q) -> Set:
         result = set()
         node : AVLNode = self.tree._root     #we want to find nodes that contain the value: key <= value <= high
-        print(self.tree)
         while node is not None:
             if node.key <= q:
                 if node.value.high >= q:
@@ -88,7 +87,7 @@ class IntervalTree:
 
             else: #node.key > q, so q is in the left subtree, but we need to check if the left subtree has any nodes that have less than q
                 if node.left is not None and node.left.value.max >= q:
-                    node = None #break loop
+                    node = node.left
                 else:
                     node = node.right
         return result

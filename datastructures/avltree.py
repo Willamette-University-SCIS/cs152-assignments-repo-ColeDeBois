@@ -153,6 +153,7 @@ class AVLTree(IAVLTree[K, V], Generic[K, V]):
 
     def delete(self, key: K) -> None: 
         self._root = self._delete(self._root, key)
+        self._size -= 1
 
     def _delete(self, node: Optional[AVLNode], key: K) -> Optional[AVLNode]:     
         if node is None:
@@ -242,7 +243,8 @@ class AVLTree(IAVLTree[K, V], Generic[K, V]):
             if node.right is not None:
                 que.enqueue(node.right)
         return keys
-            
+
+    @property       
     def size(self) -> int: 
         return self._size
 
